@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ai-inc — Minecraft Server mieten</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {margin:0; font-family:'Inter', sans-serif; background:#f5f5f5; color:#333;}
+    header {background:#2b2b2b; color:#fff; padding:20px; text-align:center;}
+    header h1 {margin:0; font-size:28px;}
+    main {max-width:800px; margin:30px auto; padding:20px; background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.1);}
+    h2 {margin-top:0;}
+    label {display:block; margin-top:12px; font-weight:600;}
+    input, select, textarea {width:100%; padding:10px; margin-top:4px; border-radius:6px; border:1px solid #ccc;}
+    button {margin-top:16px; padding:12px 20px; background:#2b2b2b; color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:600;}
+    .plans {display:flex; gap:10px; margin-top:12px;}
+    .plan {flex:1; padding:12px; border:1px solid #ccc; border-radius:6px; cursor:pointer; text-align:center;}
+    .plan.active {border-color:#2b2b2b; font-weight:700;}
+    .summary {margin-top:20px; padding:12px; background:#f0f0f0; border-radius:6px;}
+    .summary div {margin-bottom:6px;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ai-inc</h1>
+    <p>Minecraft Server mieten — Kostenlos</p>
+  </header>
+  <main>
+    <h2>Server konfigurieren</h2>
+
+    <div class="plans" id="plans">
+      <div class="plan" data-plan="standard" id="plan-standard">Standard<br>4 GB RAM / 10 GB Speicher</div>
+      <div class="plan active" data-plan="plus" id="plan-plus">Plus<br>8 GB RAM / 30 GB Speicher</div>
+    </div>
+
+    <form id="orderForm">
+      <label for="name">Dein Name</label>
+      <input id="name" type="text" placeholder="Max Mustermann" required />
+
+      <label for="email">Deine E-Mail</label>
+      <input id="email" type="email" placeholder="du@beispiel.de" required />
+
+      <label for="type">Server-Typ</label>
+      <select id="type">
+        <option value="paper">Paper (Java)</option>
+        <option value="fabric">Fabric (Java)</option>
+        <option value="spigot">Spigot (Java)</option>
+        <option value="bungeecord">BungeeCord</option>
+        <option value="velocity">Velocity</option>
+        <option value="bedrock">Bedrock</option>
+      </select>
+
+      <label for="version">Minecraft-Version</label>
+      <input id="version" type="text" placeholder="1.20.4" />
+
+      <label for="note">Weitere Wünsche / Plugins</label>
+      <textarea id="note" rows="3" placeholder="z.B. WorldEdit, Dynmap"></textarea>
+
+      <button type="submit">Server anfragen</button>
+    </form>
+
+    <div class="summary">
+      <div>Admins (E-Mails): antoschasad@gmail.com, cattech3d@gmail.com</div>
+      <div>Tarif: <span id="s-plan">Plus</span></div>
+      <div>RAM: <span id="s-ram">8 GB</span></div>
+      <div>Speicher: <span id="s-storage">30 GB</span></div>
+      <div>Typ: <span id="s-type">Paper</span></div>
+      <div>Version: <span id="s-version">1.20.4</span></div>
+    </div>
+  </main>
+
+  <script>
+    const plans = document.querySelectorAll('.plan');
+    const selectedPlanEl = document.getElementById('s-plan');
+    const sRam = document.getElementById('s-ram');
+    const sStorage = document.getElementById('s-storage');
+    const sType = document.getElementById('s-type');
+    const sVersion = document.getElementById('s-version');
+
+    let currentPlan = 'plus';
+    function setPlan(name){
+      currentPlan = name;
+      plans.forEach(p=>p.classList.toggle('active', p.dataset.plan===name));
+      if(name==='plus'){
+        selectedPlanEl.textContent='Plus'; sRam.textContent='8 GB'; sStorage.textContent='30 GB';
+      } else {
+        selectedPlanEl.textContent='Standard'; sRam.textContent='4 GB'; sStorage.textContent='10 GB';
+      }
+    }
+    plans.forEach(p=>p.addEventListener('click', ()=>setPlan(p.dataset.plan)));
+
+    const typeSelect = document.getElementById('type');
+    typeSelect.addEventListener('change', ()=>{ sType.textContent = typeSelect.options[typeSelect.selectedIndex].text; });
+    const versionInput = document.getElementById('version');
+    versionInput.addEventListener('input', ()=>{ sVersion.textContent = versionInput.value || '—'; });
+
+    document.getElementById('orderForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const type = document.getElementById('type').value;
+      const version = document.getElementById('version').value.trim() || '(nicht angegeben)';
+      const note = document.getElementById('note').value.trim() || '(keine)';
+      const plan = currentPlan;
+      const ram = plan==='plus' ? '8 GB' : '4 GB';
+      const storage = plan==='plus' ? '30 GB' : '10 GB';
+
+      const body = encodeURIComponent(
+        `Name: ${name}\nE-Mail: ${email}\nTarif: ${plan} (${ram} / ${storage})\nTyp: ${type}\nVersion: ${version}\nNotiz: ${note}`
+      );
+      const to = 'antoschasad@gmail.com,cattech3d@gmail.com';
+      window.location.href = `mailto:${to}?subject=Neue Server-Anfrage von ${encodeURIComponent(name)}&body=${body}`;
+    });
+
+    setPlan('plus');
+  </script>
+</body>
+</html>
