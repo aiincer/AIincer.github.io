@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Caty AI Chat (english)</title>
+  <script type="module">
+    import { pipeline as xenovaPipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.13.0';
+
+    let caty;
+    let codeAI;
+    let chatMemory = [];
+    const MAX_MEMORY = 8; // Anzahl der letzten Chat-Turns, die im Prompt bleiben
+    let imageCaptioner;
+
+    async function init() {
+      document.getElementById('status').innerText = '🔄 Caty AI lädt...';
+      try {
+        caty = await xenovaPipeline('text-generation', 'Xenova/distilgpt2');
+        document.getElementById('status').innerText = '✅ Caty AI bereit (distilgpt2 von Xenova)';
+        document.getElementById('sendBtn').disabled = false;
+        // Code-KI vorladen (optional, sonst beim ersten Bedarf)
+        xenovaPipeline('text-generation', 'Xenova/deepseek-coder-1.3b-instruct').then(model => { codeAI = model; });
+      } catch (e1) {
+        console.warn('distilgpt2 konnte nicht geladen werden, versuche gpt2:', e1);
+        try {
+          caty = await xenovaPipeline('text-generation', 'Xenova/gpt2');
+          document.getElementById('status').innerText = '✅ Caty AI bereit (gpt2)';
+          document.getElementById('sendBtn').disabled = false;
+        } catch (e2) {
+          document.getElementById('status').innerText = '❌ Fehler beim Laden des Modells!';
+          console.error('Beide Modelle konnten nicht geladen werden:', e1, e2);
+        }
+      }
+    }
+
+    async function loadImageCaptioner() {
+      if (!imageCaptioner) {
+        document.getElementById('status').innerText = '🔄 Lade Bild-zu-Text-KI...';
+        imageCaptioner = await xenovaPipeline('image-to-text', 'Xenova/vit-gpt2-image-captioning');
+        document.getElementById('status').innerText = '✅ Bild-zu-Text-KI bereit!';
+      }
+    }
+
+    async function loadCodeModel() {
+      if (!codeAI) {
+        document.getElementById('status').innerText = '🔄 Lade Code-KI...';
+        codeAI = await xenovaPipeline('text-generation', 'Xenova/deepseek-coder-1.3b-instruct');
+        document.getElementById('status').innerText = '✅ Code-KI bereit!';
+      }
+    }
+
+    function formatPrompt() {
+      let prompt = `The following is a conversation between a helpful AI assistant named Caty AI and a human user. Caty AI is friendly, helpful, and always tries to answer as best as possible.\n`;
+      chatMemory.slice(-MAX_MEMORY).forEach(turn => {
+        prompt += `User: ${turn.user}\nCaty AI: ${turn.ai}\n`;
+      });
+      return prompt;
+    }
+
+    async function sendMessage() {
+      const inputElem = document.getElementById('userInput');
+      const userInput = inputElem.value.trim();
+      if (!userInput) return;
+
+      appendMessage('You', userInput);
+      inputElem.value = '';
+      document.getElementById('sendBtn').disabled = true;
+
+      // Codewunsch erkennen
+      if (/```|code|programm|script|funktion|def |class |#include|<\/?[a-z]+>|python|java|c\+\+|javascript|html|css|sql|schreibe einen code|write a code|generate code/i.test(userInput)) {
+        try {
+          await loadCodeModel();
+          document.getElementById('status').innerText = '🔄 Generiere Code...';
+          const codePrompt = userInput;
+          const result = await codeAI(codePrompt, {
+            max_new_tokens: 120,
+            temperature: 0.5,
+            do_sample: true,
+            top_k: 50,
+            top_p: 0.95,
+          });
+          let response = result[0].generated_text.replace(codePrompt, '').trim();
+          response = `<pre style="background:#222;color:#0f0;padding:0.5em;border-radius:6px;overflow-x:auto;">${escapeHtml(response)}</pre>`;
+          appendMessage('Caty AI (Code)', response);
+          chatMemory.push({ user: userInput, ai: '[Code generiert]' });
+          if (chatMemory.length > MAX_MEMORY) chatMemory.shift();
+          document.getElementById('status').innerText = '✅ Caty AI bereit!';
+        } catch (err) {
+          document.getElementById('status').innerText = '❌ Fehler beim Generieren des Codes!';
+          appendMessage('Caty AI', '❌ Fehler: Code-KI konnte keinen Code generieren.');
+        }
+        document.getElementById('sendBtn').disabled = false;
+        return;
+      }
+
+      // Prompt mit Chat-Gedächtnis
+      let prompt = formatPrompt() + `User: ${userInput}\nCaty AI:`;
+
+      const result = await caty(prompt, {
+        max_new_tokens: 120,
+        temperature: 0.7,
+        do_sample: true,
+        top_k: 50,
+        top_p: 0.95,
+      });
+
+      let response = result[0].generated_text.replace(prompt, '').split('\n')[0].trim();
+      appendMessage('Caty AI', response);
+      chatMemory.push({ user: userInput, ai: response });
+      if (chatMemory.length > MAX_MEMORY) chatMemory.shift();
+      document.getElementById('status').innerText = '✅ Caty AI bereit!';
+      document.getElementById('sendBtn').disabled = false;
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>]/g, tag => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[tag]));
+    }
+
+    function appendMessage(sender, text) {
+      const chat = document.getElementById('chat');
+      const msg = document.createElement('div');
+      let isUser = sender === 'You' || sender === 'Du';
+      let isImage = /<img\s/i.test(text);
+      let isFile = /<pre|\[Datei gesendet:|\[Datei-Inhalt:/i.test(text);
+      if (isImage || isFile) {
+        msg.className = isUser ? 'msg-bubble user filebubble' : 'msg-bubble ai filebubble';
+        msg.innerHTML = `<span class=\"msg-sender\">${sender}:</span> ${text}`;
+      } else {
+        msg.innerHTML = `<b>${sender}:</b> ${text}`;
+      }
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    // Datei-Upload
+    async function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.type.startsWith('image/')) {
+        // Nach Bildauswahl: Eingabefeld für Zusatztext anzeigen
+        const tempId = 'img-comment-' + Date.now();
+        const chat = document.getElementById('chat');
+        const imgHtml = `<img src="" class="chat-image-user" alt="Bild" id="${tempId}-img" />`;
+        const commentHtml = `<div style="margin-bottom:0.5em;"><input id="${tempId}-input" type="text" placeholder="Füge einen Kommentar/Fakt zum Bild hinzu..." style="width:80%;padding:0.5em;border-radius:6px;border:1px solid #393e5c;background:#232946;color:#a6e3e9;" /> <button id="${tempId}-btn" style="padding:0.5em 1em;border-radius:6px;background:linear-gradient(90deg,#00b38f,#3a86ff);color:#fff;border:none;font-weight:bold;cursor:pointer;">Senden</button></div>`;
+        const msgDiv = document.createElement('div');
+        msgDiv.innerHTML = `<b>Du:</b> ${imgHtml}${commentHtml}`;
+        chat.appendChild(msgDiv);
+        chat.scrollTop = chat.scrollHeight;
+        // Bild anzeigen
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById(`${tempId}-img`).src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        // Button-Handler
+        setTimeout(() => {
+          document.getElementById(`${tempId}-btn`).onclick = async () => {
+            const userComment = document.getElementById(`${tempId}-input`).value.trim();
+            const imgSrc = document.getElementById(`${tempId}-img`).src;
+            // Bild als Sprechblase anzeigen
+            let bubble = `<img src="${imgSrc}" class="chat-image-user" alt="Bild" />`;
+            if (userComment) bubble += `<div style='margin-top:0.3em;color:#a6e3e9;'>${escapeHtml(userComment)}</div>`;
+            appendMessage('Du', bubble);
+            msgDiv.remove();
+            await loadImageCaptioner();
+            document.getElementById('status').innerText = '🔄 Analysiere Bild...';
+            try {
+              const result = await imageCaptioner(imgSrc, { max_new_tokens: 80 });
+              let caption = result[0]?.generated_text?.trim() || '[Keine Beschreibung erzeugt]';
+              appendMessage('Caty AI (Bildanalyse)', `<i>${escapeHtml(caption)}</i>`);
+              // Bildbeschreibung + Kommentar an Chat-KI
+              let userInput = `[Bildbeschreibung: ${caption}]` + (userComment ? `\n[Kommentar: ${userComment}]` : '');
+              chatMemory.push({ user: '[Bild gesendet]', ai: caption });
+              if (chatMemory.length > MAX_MEMORY) chatMemory.shift();
+              let prompt = formatPrompt() + `User: ${userInput}\nCaty AI:`;
+              const catyResult = await caty(prompt, {
+                max_new_tokens: 120,
+                temperature: 0.7,
+                do_sample: true,
+                top_k: 50,
+                top_p: 0.95,
+              });
+              let response = catyResult[0].generated_text.replace(prompt, '').split('\n')[0].trim();
+              appendMessage('Caty AI', response);
+              chatMemory.push({ user: userInput, ai: response });
+              if (chatMemory.length > MAX_MEMORY) chatMemory.shift();
+              document.getElementById('status').innerText = '✅ Caty AI bereit!';
+              // Wenn Text-KI eine Code-Aufgabe erkennt, automatisch an Code-KI weitergeben
+              if (/```|code|programm|script|funktion|def |class |#include|<\/?[a-z]+>|python|java|c\+\+|javascript|html|css|sql|schreibe einen code|write a code|generate code/i.test(response)) {
+                await loadCodeModel();
+                document.getElementById('status').innerText = '🔄 Generiere Code...';
+                const codePrompt = response;
+                const codeResult = await codeAI(codePrompt, {
+                  max_new_tokens: 120,
+                  temperature: 0.5,
+                  do_sample: true,
+                  top_k: 50,
+                  top_p: 0.95,
+                });
+                let codeResponse = codeResult[0].generated_text.replace(codePrompt, '').trim();
+                codeResponse = `<pre style=\"background:#222;color:#0f0;padding:0.5em;border-radius:6px;overflow-x:auto;\">${escapeHtml(codeResponse)}</pre>`;
+                appendMessage('Caty AI (Code)', codeResponse);
+                chatMemory.push({ user: codePrompt, ai: '[Code generiert]' });
+                if (chatMemory.length > MAX_MEMORY) chatMemory.shift();
+                document.getElementById('status').innerText = '✅ Caty AI bereit!';
+                // Optional: Text-KI kommentiert Code-Antwort
+                let codeReviewPrompt = formatPrompt() + `User: [Code-Antwort erhalten]\nCaty AI:`;
+                const reviewResult = await caty(codeReviewPrompt, {
+                  max_new_tokens: 80,
+                  temperature: 0.7,
+                  do_sample: true,
+                  top_k: 50,
+                  top_p: 0.95,
+                });
+                let review = reviewResult[0].generated_text.replace(codeReviewPrompt, '').split('\n')[0].trim();
+                appendMessage('Caty AI', review);
+                chatMemory.push({ user: '[Code-Antwort erhalten]', ai: review });
+                if (chatMemory.length > MAX_MEMORY) chatMemory.shift();
+              }
+            } catch (err) {
+              document.getElementById('status').innerText = '❌ Fehler bei der Bildanalyse!';
+              appendMessage('Caty AI', '❌ Fehler: Bild-zu-Text-KI konnte das Bild nicht analysieren.');
+            }
+          };
+        }, 100);
+      } else if (file.type.startsWith('text/')) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          // Dateivorschau als eigene Sprechblase mit Dateiname und Icon
+          const fileBubble = `
+            <div style=\"display:flex;align-items:center;gap:0.7em;\">
+              <span class='file-icon'>&#128196;</span>
+              <span class='file-name'>${escapeHtml(file.name)}</span>
+            </div>
+            <pre style=\"background:#181c2b;color:#00ffcc;padding:0.7em;border-radius:8px;overflow-x:auto;font-size:1em;max-height:180px;\">${escapeHtml(e.target.result)}</pre>
+          `;
+          appendMessage('Du', fileBubble);
+          chatMemory.push({ user: `[Datei-Inhalt: ${file.name}]\n${e.target.result}`, ai: '' });
+        };
+        reader.readAsText(file);
+      } else {
+        // Andere Dateien als Sprechblase mit Dateiname und Icon anzeigen
+        const fileBubble = `
+          <div style=\"display:flex;align-items:center;gap:0.7em;\">
+            <span class='file-icon'>&#128196;</span>
+            <span class='file-name'>${escapeHtml(file.name)}</span>
+            <span class='file-type'>(${escapeHtml(file.type||'Datei')})</span>
+          </div>
+        `;
+        appendMessage('Du', fileBubble);
+      }
+      event.target.value = '';
+    }
+
+    window.onload = init;
+    window.sendMessage = sendMessage;
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #181c2b 0%, #232946 100%);
+      color: #e0e0e0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+    }
+    #container {
+      width: 100%; max-width: 540px;
+      background: #232946ee;
+      padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #23294655;
+      display: flex; flex-direction: column;
+      height: 92vh;
+      border: 1.5px solid #393e5c;
+    }
+    #status {
+      margin-bottom: 0.7rem;
+      font-weight: bold;
+      color: #a6e3e9;
+      letter-spacing: 0.03em;
+    }
+    #chat {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 1.1rem 0.7rem;
+      background: #1a1a2e;
+      border-radius: 10px;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 2px 8px #23294622;
+      font-size: 1.08rem;
+    }
+    #chat div {
+      margin-bottom: 0.7em;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.9rem;
+      background: #232946;
+      border: 1.5px solid #393e5c;
+      border-radius: 8px;
+      color: #a6e3e9;
+      font-size: 1.08rem;
+      margin-bottom: 0.3rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus {
+      border: 1.5px solid #a6e3e9;
+    }
+    button {
+      margin-top: 0.2rem;
+      padding: 0.85rem;
+      background: linear-gradient(90deg, #00b38f 0%, #3a86ff 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.08rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #23294633;
+      transition: background 0.2s;
+    }
+    button:disabled {
+      background: #555;
+      color: #bbb;
+      cursor: not-allowed;
+    }
+    #fileInput {
+      margin-top: 0.5rem;
+      color: #a6e3e9;
+      background: none;
+      border: none;
+      font-size: 1rem;
+    }
+    img {
+      max-width: 220px;
+      border-radius: 10px;
+      margin: 0.5em 0;
+      display: block;
+      box-shadow: 0 2px 8px #23294644;
+    }
+    pre {
+      background: #181c2b;
+      color: #00ffcc;
+      padding: 0.7em;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 1em;
+    }
+    @media (max-width: 600px) {
+      #container {
+        max-width: 98vw;
+        padding: 0.5rem;
+        height: 99vh;
+      }
+      #chat {
+        padding: 0.5rem 0.2rem;
+      }
+      img {
+        max-width: 98vw;
+      }
+    }
+    .chat-image-user {
+      max-width: 220px;
+      border-radius: 10px;
+      margin: 0.5em 0;
+      display: block;
+      box-shadow: 0 2px 8px #00b38f44;
+      border: 2px solid #00b38f;
+    }
+    .file-upload-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-top: 0.7rem;
+    }
+    #fileInput {
+      opacity: 0;
+      width: 0.1px;
+      height: 0.1px;
+      position: absolute;
+      left: 0; top: 0;
+      z-index: -1;
+    }
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      background: linear-gradient(90deg, #00b38f 0%, #3a86ff 100%);
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.08rem;
+      border-radius: 8px;
+      padding: 0.7em 1.2em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #23294633;
+      border: none;
+      transition: background 0.2s;
+    }
+    .file-upload-label:hover {
+      background: linear-gradient(90deg, #3a86ff 0%, #00b38f 100%);
+    }
+    .file-upload-label svg {
+      width: 1.3em;
+      height: 1.3em;
+      fill: #fff;
+    }
+    .msg-bubble {
+      max-width: 80%;
+      margin-bottom: 0.7em;
+      padding: 0.7em 1em;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px #23294633;
+      position: relative;
+      word-break: break-word;
+      background: #232946;
+      color: #a6e3e9;
+      display: inline-block;
+      clear: both;
+    }
+    .msg-bubble.user {
+      background: linear-gradient(90deg, #00b38f 0%, #3a86ff 100%);
+      color: #fff;
+      margin-left: auto;
+      margin-right: 0;
+      text-align: right;
+      border-bottom-right-radius: 6px;
+    }
+    .msg-bubble.ai {
+      background: #232946;
+      color: #a6e3e9;
+      margin-right: auto;
+      margin-left: 0;
+      text-align: left;
+      border-bottom-left-radius: 6px;
+    }
+    .msg-bubble.image img {
+      max-width: 220px;
+      border-radius: 14px;
+      margin: 0.2em 0 0.2em 0;
+      display: block;
+      box-shadow: 0 2px 8px #00b38f44;
+      border: 2px solid #00b38f;
+    }
+    .msg-bubble.filebubble {
+      max-width: 80%;
+      margin-bottom: 0.7em;
+      padding: 0.7em 1em;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px #23294633;
+      position: relative;
+      word-break: break-word;
+      background: #232946;
+      color: #a6e3e9;
+      display: inline-block;
+      clear: both;
+    }
+    .msg-bubble.user.filebubble {
+      background: linear-gradient(90deg, #00b38f 0%, #3a86ff 100%);
+      color: #fff;
+      margin-left: auto;
+      margin-right: 0;
+      text-align: right;
+      border-bottom-right-radius: 6px;
+    }
+    .msg-bubble.ai.filebubble {
+      background: #232946;
+      color: #a6e3e9;
+      margin-right: auto;
+      margin-left: 0;
+      text-align: left;
+      border-bottom-left-radius: 6px;
+    }
+    .msg-bubble.filebubble img {
+      max-width: 220px;
+      border-radius: 14px;
+      margin: 0.2em 0 0.2em 0;
+      display: block;
+      box-shadow: 0 2px 8px #00b38f44;
+      border: 2px solid #00b38f;
+    }
+    .msg-sender {
+      font-size: 0.92em;
+      font-weight: bold;
+      opacity: 0.7;
+      display: block;
+      margin-bottom: 0.2em;
+    }
+    .file-icon {
+      font-size: 1.5em;
+      color: #3a86ff;
+      vertical-align: middle;
+    }
+    .file-name {
+      font-weight: bold;
+      color: #a6e3e9;
+      font-size: 1.08em;
+      word-break: break-all;
+    }
+    .file-type {
+      color: #888;
+      font-size: 0.98em;
+      margin-left: 0.3em;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="status">🔄 Lade Caty AI...</div>
+    <div id="chat"></div>
+    <input id="userInput" type="text" placeholder="Deine Nachricht..." onkeydown="if(event.key==='Enter') sendMessage()" />
+    <button id="sendBtn" onclick="sendMessage()" disabled>Senden</button>
+    <div class="file-upload-wrapper">
+      <input id="fileInput" type="file" onchange="handleFileUpload(event)" />
+      <label for="fileInput" class="file-upload-label">
+        <svg viewBox="0 0 24 24"><path d="M16.5 6.5l-9 9M8.5 6.5h8v8" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/></svg>
+        Datei senden
+      </label>
+    </div>
+  </div>
+</body>
+</html>
