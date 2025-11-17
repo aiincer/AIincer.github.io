@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI_INC – Startseite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: #1a1a1a;
+      color: white;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+    .container {
+      margin-top: 40px;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    button, a.button-link {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      background: #2e6ce6;
+      color: white;
+      text-decoration: none;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover, a.button-link:hover {
+      background: #1d4bb8;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    #login-error {
+      color: red;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>AI_INC – Startseite</header>
+
+  <div class="container" id="login-box">
+    <h2>Anmelden</h2>
+    <input type="text" id="username" placeholder="Benutzername" />
+    <input type="password" id="password" placeholder="Passwort" />
+    <button onclick="login()">Login</button>
+    <p id="login-error">Falscher Benutzername oder Passwort!</p>
+  </div>
+
+  <div class="container" id="link-box" style="display:none;">
+    <h2>Navigation</h2>
+    <a href="minecraft_server_vermietung_ai_inc_single_file (1).html" class="button-link">Minecraft Server Vermietung</a>
+    <a href="caty ai o8.html" class="button-link">Caty AI O8</a>
+  </div>
+
+<script>
+  function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    // Beispiel-Zugangsdaten (nur clientseitig, nicht sicher!)
+    const correctUser = "admin";
+    const correctPass = "1234";
+
+    if (user === correctUser && pass === correctPass) {
+      document.getElementById('login-box').style.display = 'none';
+      document.getElementById('link-box').style.display = 'block';
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+</script>
+</body>
+</html>
