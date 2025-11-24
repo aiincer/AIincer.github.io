@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webhosting Tarife - Flammenfarben Kiste</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  overflow-x: hidden;
+}
+header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 15px 40px; background-color: #4CAF50;
+}
+.logo { display: flex; flex-direction: column; font-weight: bold; }
+.logo span:first-child { font-size: 1.5rem; }
+.logo span:last-child { font-size: 1rem; }
+.dropdown { position: relative; display: inline-block; }
+.dropbtn { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+.dropdown-content { display: none; position: absolute; right: 0; background-color: white; min-width: 150px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); border-radius: 5px; z-index: 1; }
+.dropdown-content a { display: block; padding: 10px 15px; color: #333; text-decoration: none; }
+.dropdown-content a:hover { background-color: #f0f0f0; }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown:hover .dropbtn { background-color: #45a049; }
+
+main { max-width: 1000px; margin: 50px auto; text-align: center; padding: 0 20px; position: relative; z-index: 1; }
+h1 { font-size: 2.5rem; margin-bottom: 20px; }
+p { font-size: 1.2rem; margin-bottom: 30px; }
+
+.tarif-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; position: relative; z-index: 1; }
+.tarif {
+  position: relative; background-color: #222; border-radius: 15px;
+  padding: 30px 20px; width: 250px; overflow: visible; box-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+.tarif h2 { color: #4CAF50; margin-top: 0; }
+.tarif p { margin: 8px 0; }
+.btn { display: inline-block; padding: 10px 20px; background-color: #4CAF50; border-radius: 8px; text-decoration: none; color: #fff; margin-top: 10px; }
+.btn:hover { background-color: #45a049; }
+
+canvas#particlesCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <span><a href="/" style="color:white;text-decoration:none;">AI-Inc</a></span>
+    <span><a href="/" style="color:white;text-decoration:none;">Webhosting</a></span>
+  </div>
+  <div class="dropdown">
+    <button class="dropbtn">Optionen</button>
+    <div class="dropdown-content">
+      <a href="/upload">Upload</a>
+      <a href="/browse">Browse</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <h1>Unsere Tarife</h1>
+  <p>Flammen aus den Kisten nach Farbe geordnet!</p>
+  <div class="tarif-container">
+    <div class="tarif" data-color="255,0,0">
+      <h2>Starter</h2>
+      <p>5 GB Speicher</p>
+      <p>1 Domain</p>
+      <p>10 GB Traffic/Monat</p>
+      <a class="btn" href="/signup?plan=starter">Jetzt wählen</a>
+    </div>
+    <div class="tarif" data-color="255,255,0">
+      <h2>Pro</h2>
+      <p>50 GB Speicher</p>
+      <p>5 Domains</p>
+      <p>500 GB Traffic/Monat</p>
+      <a class="btn" href="/signup?plan=pro">Jetzt wählen</a>
+    </div>
+    <div class="tarif" data-color="0,255,0">
+      <h2>Business</h2>
+      <p>200 GB Speicher</p>
+      <p>10 Domains</p>
+      <p>Unbegrenzter Traffic</p>
+      <a class="btn" href="/signup?plan=business">Jetzt wählen</a>
+    </div>
+  </div>
+</main>
+
+<canvas id="particlesCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById('particlesCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Particle {
+  constructor(x, y, width, color){
+    this.x = x + Math.random() * width;
+    this.y = y;
+    this.vx = (Math.random() - 0.5) * 1;
+    this.vy = -(Math.random()*2 + 2);
+    this.radius = Math.random()*3 + 2;
+    this.alpha = 1;
+    this.color = color;
+  }
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+    this.alpha -= 0.02;
+  }
+  draw(ctx){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+    ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+const cards = document.querySelectorAll('.tarif');
+let particles = [];
+
+function spawnParticles() {
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const width = rect.width;
+    const xStart = rect.left;
+    const yStart = rect.top; 
+    const color = card.dataset.color; // Farbe der Kiste
+    for(let i=0;i<3;i++){
+      particles.push(new Particle(xStart, yStart, width, color));
+    }
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  spawnParticles();
+  for(let i=particles.length-1;i>=0;i--){
+    const p = particles[i];
+    p.update();
+    p.draw(ctx);
+    if(p.alpha <= 0) particles.splice(i,1);
+  }
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+</body>
+</html>
