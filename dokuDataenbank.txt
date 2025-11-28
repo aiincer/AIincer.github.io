@@ -1,0 +1,16 @@
+users
+  name
+  password
+codes
+  code
+  time
+  date(int)
+  account
+subs
+  code
+  services(list)
+  activ(bol)
+  account(str/null)
+services
+  "id"(json)
+    name
