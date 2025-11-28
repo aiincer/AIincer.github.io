@@ -30,3 +30,10 @@
         index.html
         login.html
         singup.html
+####################
+/host
+    main.py
+    /sites
+        /"name"
+            "seite".html
+...
