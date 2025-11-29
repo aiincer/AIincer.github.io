@@ -1,8 +1,9 @@
 /host
-    main.py
-    /sites
+    datenbank.json
+    /host
         /"name"
             "seite".html
+    main.py
 /zentral
     \__pycache__
     app.py
