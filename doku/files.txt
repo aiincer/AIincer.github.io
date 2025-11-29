@@ -1,4 +1,5 @@
 /host
+    __init__.py
     datenbank.json
     /host
         /"name"
