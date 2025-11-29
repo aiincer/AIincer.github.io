@@ -18,21 +18,22 @@
         const pingUrl = `http://[${serverIP}]:5000/api/ping`;
         const redirectUrl = `http://[${serverIP}]:5000/`;
 
-        fetch(pingUrl, { method: 'GET' })
-            .then(response => {
+        //fetch(pingUrl, { method: 'GET' })
+            //.then(response => {
                 // Header "msg" auslesen
-                const msg = response.headers.get('msg');
-                if (msg === 'true') {
+                //const msg = response.headers.get('msg');
+                //if (msg === 'true') {
                     // Weiterleitung
-                    window.location.href = redirectUrl;
-                } else {
-                    document.getElementById('status').textContent = "Server nicht erreichbar";
-                }
-            })
-            .catch(error => {
-                console.error("Fehler beim Ping:", error);
-                document.getElementById('status').textContent = "Server nicht erreichbar";
-            });
+                    //window.location.href = redirectUrl;
+                //} else {
+                    //document.getElementById('status').textContent = "Server nicht erreichbar";
+                //}
+            //})
+            //.catch(error => {
+                //console.error("Fehler beim Ping:", error);
+                //document.getElementById('status').textContent = "Server nicht erreichbar";
+            //});
+        window.location.href = redirectUrl;
     </script>
 </body>
 </html>
