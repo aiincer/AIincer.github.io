@@ -1,1 +1,38 @@
-tuff
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Check</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        #status { font-size: 1.5em; color: red; }
+    </style>
+</head>
+<body>
+    <h1>Server Check</h1>
+    <div id="status">Prüfe Server...</div>
+
+    <script>
+        // IP-Adresse des Servers
+        const serverIP = "192.168.1.100"; // hier deine IP einsetzen
+        const pingUrl = `http://${serverIP}:5000/ping`;
+        const redirectUrl = `http://${serverIP}:5000/`;
+
+        fetch(pingUrl, { method: 'GET' })
+            .then(response => {
+                // Header "msg" auslesen
+                const msg = response.headers.get('msg');
+                if (msg === 'true') {
+                    // Weiterleitung
+                    window.location.href = redirectUrl;
+                } else {
+                    document.getElementById('status').textContent = "Server nicht erreichbar";
+                }
+            })
+            .catch(error => {
+                console.error("Fehler beim Ping:", error);
+                document.getElementById('status').textContent = "Server nicht erreichbar";
+            });
+    </script>
+</body>
+</html>
