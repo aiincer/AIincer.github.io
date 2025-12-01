@@ -1,7 +1,7 @@
-🟥-server file struktur entwerfen
-🟥-datenbank struktur entwerfen
-🟥-tarif erkennung machen und verlnüpfen
-🟥-side tatif edit seite machen
+🟩-server file struktur entwerfen
+🟩-datenbank struktur entwerfen
+🟥w-tarif erkennung machen und verknüpfen
+🟥-site edit seite machen
 🟥-seite mit backend verkmüpfen
-🟥-sites tatif wdir seiten machen
+🟥-sites tatif  machen
 ...
