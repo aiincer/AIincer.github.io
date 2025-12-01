@@ -1,5 +1,9 @@
 🟩-server file struktur entwerfen
 🟩-datenbank struktur entwerfen
+🟥-datenbank+api desingen:
+  🟥-anmelden
+  🟥-sites erstellen
+  🟥-sites zurückgeben
 🟥w-tarif erkennung machen und verknüpfen
 🟥-site edit seite machen
 🟥-seite mit backend verkmüpfen
