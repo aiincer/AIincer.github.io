@@ -17,8 +17,9 @@
             name
 ----------host----------
     users
-        tarife(list)
-        sites(list)
+        "name"(json)
+            tarife(list)
+            sites(list)
     sites
         "id"(json)
             user
