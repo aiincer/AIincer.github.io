@@ -1,16 +1,26 @@
-users
-  name
-  password
-codes
-  code
-  time
-  date(int)
-  account
-subs
-  code
-  services(list)
-  activ(bol)
-  account(str/null)
-services
-  "id"(json)
-    name
+----------main----------
+    users
+        name
+        password
+    codes
+        code
+        time
+        date(int)
+        account
+    subs
+        code
+        services(list)
+        activ(bol)
+        account(str/null)
+      services
+        "id"(json)
+            name
+----------host----------
+    users
+        tarife(list)
+        sites(list)
+    sites
+        "id"(json)
+            user
+            tarif
+            sites(list)
