@@ -24,4 +24,5 @@
         "id"(json)
             user
             tarif
+            index
             sites(list)
