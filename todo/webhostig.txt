@@ -4,7 +4,7 @@
   🟩-anmelden (->automatisch)
   🟥-sites erstellen
   🟥-sites zurückgeben
-🟥w-tarif erkennung machen und verknüpfen
+🟩-tarif erkennung machen und verknüpfen
 🟥-site edit seite machen
 🟥-seite mit backend verkmüpfen
 🟥-sites tatif  machen
