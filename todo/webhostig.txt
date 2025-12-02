@@ -1,7 +1,7 @@
 🟩-server file struktur entwerfen
 🟩-datenbank struktur entwerfen
-🟥-datenbank+api desingen:
-  🟥-anmelden
+🟨-datenbank+api desingen:
+  🟩-anmelden (->automatisch)
   🟥-sites erstellen
   🟥-sites zurückgeben
 🟥w-tarif erkennung machen und verknüpfen
