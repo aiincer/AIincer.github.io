@@ -1,0 +1,8 @@
+/host/edit?site=¥&page=¥^&aktion=¥^
+
+site: die seite
+page: die page
+aktion: die aktion:
+  delete
+  create
+  --
