@@ -19,7 +19,11 @@
     users
         "name"(json)
             tarife(list)
-            sites(list)
+            sites(lists):
+                [
+                name
+                tarif
+                ]
     sites
         "id"(json)
             user
