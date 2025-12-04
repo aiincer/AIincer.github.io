@@ -1,8 +1,8 @@
-/host/edit?site=¥&page=¥^&aktion=¥^
+/host/edit/"aktion"?site=¥&page=¥
 
-site: die seite
-page: die page
 aktion: die aktion:
   delete
   create
   --
+site: die seite
+page: die page
