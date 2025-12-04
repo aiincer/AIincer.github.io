@@ -15,12 +15,15 @@
         datenbank.json
     routes.py
     /scripts
+        /account
+            accountCodesAddScript.js
+            accountCodesEditsScript.js
+            accountCodesScript.js
         accountCheck.js
-        accountCodesAddScript.js
-        accountCodesEditsScript.js
-        accountCodesScript.js
         accountName.js
-        hostAdminScript.js
+        /host
+            hostAdminScript.js
+            createScript.js
         login.js
         singup.js
     /sites
@@ -31,6 +34,7 @@
             accountHost.html
             accountMain.html
         /host
+            editCreate.html
             hostAdmin.html
             hostIndex.html
             hostInfo.html
