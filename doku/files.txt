@@ -22,8 +22,10 @@
         accountCheck.js
         accountName.js
         /host
-            hostAdminScript.js
+            accessCheck.js
             createScript.js
+            editScript.js
+            hostAdminScript.js
         login.js
         singup.js
     /sites
@@ -35,6 +37,7 @@
             accountMain.html
         /host
             editCreate.html
+            editEdit.html
             hostAdmin.html
             hostIndex.html
             hostInfo.html
