@@ -1,0 +1,17 @@
+definitionen:
+    -aktien:
+        def.stocks=["<aktie>", ...]
+    -time:
+        def.time=<time>
+            zeiten:
+            -1: 1 jahr
+    -variablen:
+        dev.vars=[["<variable>", <from>, <to>, <increase>], ...]
+code:
+    der code wird ausgeführt und die variablen in dev.vars sind mit vars["<variable>"] abrufbahr und es gibt mehrere durchgänge und es wird jede mögliche kombination von variablen ausgeführt
+funktionen:
+    -aktien:
+        buy(<stock>, <count>)
+        sell(<stock>, <count>)
+        vars:
+            money
