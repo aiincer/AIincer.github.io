@@ -15,3 +15,5 @@ funktionen:
         sell(<stock>, <count>)
         vars:
             money
+score #das gesamte geld + der wert aller aktien
+    end() #beendet das programm, und gibt den score zurück
