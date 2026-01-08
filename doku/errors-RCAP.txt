@@ -1,0 +1,12 @@
+0-user:
+001: command does not exist
+
+1-connection:
+101: ip server didnt responde
+102: server didnt responde
+103: incorrest server response
+
+2-internal:
+
+3-other:
+301: authentification error
