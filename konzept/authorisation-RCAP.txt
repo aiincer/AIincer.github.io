@@ -1,0 +1,5 @@
+request: connect
+-> {key: ^key^}, 200
+
+request: any
+-> {key: [^code^, ^hashed code+key^]}
