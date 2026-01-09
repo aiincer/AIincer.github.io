@@ -1,0 +1,6 @@
+connections:
+  /start:
+    req:
+       -
+    res:
+      {"key": ^1-0x10^}
