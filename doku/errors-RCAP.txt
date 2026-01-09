@@ -14,6 +14,7 @@
 110: requests - proxy error
 111: requests - chunked encoding error
 112: requests - content decoding error
+113: requests - other error
 
 2-internal:
 
