@@ -1,5 +1,6 @@
 0-user:
 001: command does not exist
+002: command (single use) was already used
 
 1-connection:
 101: ip server didnt responde
