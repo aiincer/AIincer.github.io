@@ -1,1 +1,17 @@
+// - over:
+  //start
+    verbindung zum server
+    startet session
+  //stop
+    verbindung zu server trennen
+  //login ^account^ ^passwort^
+    ^coount^: benutzername
+    ^passwort^: passwort
+    logt account in session ein
 
+########
+
+// - over:
+  //start
+  //stop
+  //login ^account^ ^passwort^
