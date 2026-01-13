@@ -1,0 +1,24 @@
+0-user:
+001: command does not exist
+002: command (single use) was already used
+003: programm not started
+
+1-connection:
+101: ip server didnt responde
+102: incorrest server response
+103: requests - connection error
+104: requests - timeout
+105: requests - invalid schema
+106: requests - missing schema
+107: requests - invalid url
+108: requests - too many redirects
+109: requests - ssl error
+110: requests - proxy error
+111: requests - chunked encoding error
+112: requests - content decoding error
+113: requests - other error
+
+2-internal:
+
+3-other:
+301: authentification error
