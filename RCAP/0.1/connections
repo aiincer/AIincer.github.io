@@ -3,4 +3,4 @@ connections:
     req:
        -
     res:
-      {"key": ^1-m x10^, "session": ^00000-99999^}
+      {"key": ^1-m x10^, "session": ^0-9 x5^}
