@@ -1,0 +1,22 @@
+// - over:
+  //start
+    verbindung zum server
+    startet session
+  //stop
+    verbindung zu server trennen
+  //login ^account^ ^passwort^
+    ^coount^: benutzername
+    ^passwort^: passwort
+    logt account in session ein
+: - client-side
+  :debug ^bool^
+    ^bool^: an/aus
+    schaltet den debug-mode an oder aus
+    (standard mäßig aus)
+
+########
+
+// - over:
+  //start
+  //stop
+  //login ^account^ ^passwort^
