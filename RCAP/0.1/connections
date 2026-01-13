@@ -1,0 +1,6 @@
+connections:
+  /start:
+    req:
+       -
+    res:
+      {"key": ^1-m x10^, "session": ^00000-99999^}
