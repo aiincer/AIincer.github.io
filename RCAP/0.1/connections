@@ -3,9 +3,9 @@ connections:
     req:
        -
     res:
-      {"key": ^1-m x10^, "session": ^0-9 x5^}
+      {"key": ^1-m x10^, "session": ^0-9 x5^, "code": ^hashed (password)^}
   /login:
     req:
-      {"name": ^str^, "password": ^hashed str^}
+      {"name": ^str^, "password": ^hashed (code)^}
     res:
       {"ok": ^bool^}
