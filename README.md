@@ -1,3 +1,2 @@
 # AIinc
-Website für AI-Inc + Framework
-<a href="/">Link</a>
+Website für AI-Inc + momy
