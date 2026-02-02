@@ -28,5 +28,6 @@
   801: accounts
     8011: username does not exist
     8012: wrong pasword
+    8013: session does not exist
 
 9-status:
