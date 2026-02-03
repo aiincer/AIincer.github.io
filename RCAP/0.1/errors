@@ -3,6 +3,7 @@
   002: command (single use) was already used
   003: programm not started
   004: not enough params
+  005: params have wrong types
 
 1-connection:
   101: ip server didnt responde
