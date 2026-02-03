@@ -8,7 +8,7 @@
     ^coount^: benutzername
     ^passwort^: passwort
     logt account in session ein
-: - client-side
+: - client-side:
   :debug ^bool^
     ^bool^: an/aus
     schaltet den debug-mode an oder aus
@@ -19,4 +19,6 @@
 // - over:
   //start                           🟩 0.1
   //stop                            🟩 0.1
-  //login ^account^ ^passwort^      x
+  //login ^account^ ^passwort^      🟩 0.1
+: - client-side:
+  :debug                            x
