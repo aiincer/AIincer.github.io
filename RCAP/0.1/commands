@@ -21,4 +21,4 @@
   //stop                            🟩 0.1
   //login ^account^ ^passwort^      🟩 0.1
 : - client-side:
-  :debug                            x
+  :debug                            🟩 0.1
