@@ -13,9 +13,12 @@
     ^bool^: an/aus
     schaltet den debug-mode an oder aus
     (standard mäßig aus)
-  :#install ^library^
+~ - manager:
+  ~start
+    startet die gewählte client side library
+  ~install ^library^
     installiert client side library
-  :#run ^library^
+  ~run ^library^
     führt client side library aus
 # - library:
   #install ^library^
@@ -31,5 +34,9 @@
   :debug                            🟩 0.1
   :#install                         
   :#run                             
+~ - manager:
+  ~start                            
+  ~install                           
+  ~run                              
 # - library:
   #install                          x
