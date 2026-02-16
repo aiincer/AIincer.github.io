@@ -27,14 +27,14 @@
 ########
 
 // - over:
-  //start                           🟩 0.1
-  //stop                            🟩 0.1
-  //login                           🟩 0.1
+  //start                           🟩 v0.1
+  //stop                            🟩 v0.1
+  //login                           🟩 v0.1
 : - client-side:
-  :debug                            🟩 0.1                          
+  :debug                            🟩 v0.1                          
 ~ - manager:
-  ~start                            🟩 0.1
-  ~install                          🟩 0.1
-  ~run                              🟩 0.1
+  ~start                            🟩 b0.1
+  ~install                          🟩 b0.1
+  ~run                              🟩 b0.1
 # - library:
   #install                          x
