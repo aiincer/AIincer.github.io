@@ -4,6 +4,7 @@ const gameFrame = document.getElementById('gameFrame');
 
 generateBtn.addEventListener('click', async () => {
     const prompt = gameInput.value.trim();
+    const lkey = document.getElementById('lkey').value.trim();
     if (!prompt) return alert('Bitte beschreibe dein Spiel!');
 
     generateBtn.disabled = true;
@@ -16,7 +17,8 @@ generateBtn.addEventListener('click', async () => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: `Erstelle ein spielbares HTML/CSS/JS Spiel basierend auf: ${prompt}`
+                message: `Erstelle ein spielbares HTML/CSS/JS Spiel basierend auf: ${prompt}`,
+                key: lkey
             })
         });
 
