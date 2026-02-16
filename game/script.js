@@ -1,45 +1,87 @@
-const generateBtn = document.getElementById('generateBtn');
-const gameInput = document.getElementById('gameInput');
-const gameFrame = document.getElementById('gameFrame');
+const loginStep = document.getElementById("loginStep");
+const gameStep = document.getElementById("gameStep");
+const loginBtn = document.getElementById("loginBtn");
+const userKeyInput = document.getElementById("userKey");
+const loginError = document.getElementById("loginError");
 
-generateBtn.addEventListener('click', async () => {
-    const prompt = gameInput.value.trim();
-    const lkey = document.getElementById('lkey').value.trim();
-    if (!prompt) return alert('Bitte beschreibe dein Spiel!');
+const creditCountEl = document.getElementById("creditCount");
+const gameInput = document.getElementById("gameInput");
+const generateBtn = document.getElementById("generateBtn");
+const gameFrame = document.getElementById("gameFrame");
+const gameError = document.getElementById("gameError");
 
-    generateBtn.disabled = true;
-    generateBtn.textContent = '🎨 Erstelle dein Spiel...';
+let userKey = "";
+let userCredits = 0;
 
-    try {
-        const response = await fetch("https://shakily-curvy-sofa.mimo.dev/aigenerate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                message: `Erstelle ein spielbares HTML/CSS/JS Spiel basierend auf: ${prompt}; GIB NUR HTML AUS IN DEM CSS UND JS INTIGRIERT SIND; GIB NUR HTML CODE AUS SONST NICHTS, KEINEN ZUSÄTZLICHEN TEXT!!!!!!!!`,
-                key: lkey
-            })
-        });
+// 🔹 Login / Key prüfen
+loginBtn.addEventListener("click", async () => {
+  userKey = userKeyInput.value.trim();
+  if(!userKey) return loginError.textContent = "Bitte gib deinen Code ein!";
 
-        const data = await response.json();
+  try {
+    const res = await fetch("https://shakily-curvy-sofa.mimo.dev/credits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: userKey })
+    });
 
-        // Mimo API gibt Antwort in data.response zurück
-        const code = data.response;
+    const data = await res.json();
 
-        if (!code) {
-            throw new Error("Keine Antwort erhalten");
-        }
-
-        const blob = new Blob([code], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        gameFrame.src = url;
-
-    } catch (err) {
-        console.error(err);
-        alert('Fehler beim Erstellen des Spiels!');
-    } finally {
-        generateBtn.disabled = false;
-        generateBtn.textContent = '🎨 Spiel erstellen';
+    if(res.ok){
+      userCredits = data.credits;
+      creditCountEl.textContent = userCredits;
+      loginStep.style.display = "none";
+      gameStep.style.display = "block";
+    } else {
+      loginError.textContent = data.error || "Code ungültig";
     }
+  } catch(err){
+    loginError.textContent = "Server Fehler";
+    console.error(err);
+  }
+});
+
+// 🔹 Spiel generieren
+generateBtn.addEventListener("click", async () => {
+  const prompt = gameInput.value.trim();
+  gameError.textContent = "";
+
+  if(!prompt) return gameError.textContent = "Bitte beschreibe dein Spiel!";
+
+  if(userCredits <= 0) return gameError.textContent = "Keine Credits mehr!";
+
+  generateBtn.disabled = true;
+  generateBtn.textContent = "🎨 Erstelle dein Spiel...";
+
+  try {
+    const res = await fetch("https://shakily-curvy-sofa.mimo.dev/aigenerate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key: userKey, message: prompt })
+    });
+
+    const data = await res.json();
+
+    if(res.ok && data.response){
+      userCredits = data.remainingCredits;
+      creditCountEl.textContent = userCredits;
+
+      const blob = new Blob([data.response], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      gameFrame.src = url;
+
+      if(userCredits <= 0){
+        gameError.textContent = "Du hast keine Credits mehr!";
+      }
+    } else {
+      gameError.textContent = data.error || "Fehler beim Generieren!";
+    }
+
+  } catch(err){
+    console.error(err);
+    gameError.textContent = "Server Fehler";
+  } finally {
+    generateBtn.disabled = false;
+    generateBtn.textContent = "🎨 Spiel erstellen";
+  }
 });
