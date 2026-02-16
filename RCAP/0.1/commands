@@ -31,12 +31,10 @@
   //stop                            🟩 0.1
   //login                           🟩 0.1
 : - client-side:
-  :debug                            🟩 0.1
-  :#install                         
-  :#run                             
+  :debug                            🟩 0.1                          
 ~ - manager:
-  ~start                            
-  ~install                           
-  ~run                              
+  ~start                            🟩 0.1
+  ~install                          🟩 0.1
+  ~run                              🟩 0.1
 # - library:
   #install                          x
