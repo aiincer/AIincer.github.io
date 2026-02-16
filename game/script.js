@@ -2,12 +2,11 @@ const generateBtn = document.getElementById('generateBtn');
 const gameInput = document.getElementById('gameInput');
 const gameFrame = document.getElementById('gameFrame');
 
-// 🔒 Verschlüsselter API-Key (Beispiel)
-// Verschlüsselt mit Passwort "meinPasswort123"
-const encryptedKey = "U2FsdGVkX1+q4XZTJ8Vt59x6aL3kE4eUqG4tF6ZkFpE=";
+// 🔒 Verschlüsselter Key (erstellt mit Passwort "meinPasswort123")
+const encryptedKey = "U2FsdGVkX19vS1qT3wQK0l7z5V7E4kPfJ7yqI0JbXJU=";
 const password = "meinPasswort123";
 
-// Funktion zum Entschlüsseln des Keys
+// Funktion zum Entschlüsseln des API-Keys
 function decryptKey(encrypted, password) {
     const bytes = CryptoJS.AES.decrypt(encrypted, password);
     return bytes.toString(CryptoJS.enc.Utf8);
@@ -16,48 +15,34 @@ function decryptKey(encrypted, password) {
 generateBtn.addEventListener('click', async () => {
     const prompt = gameInput.value.trim();
     if (!prompt) return alert('Bitte beschreibe dein Spiel!');
-
+    
     generateBtn.disabled = true;
     generateBtn.textContent = '🎨 Erstelle dein Spiel...';
 
     try {
-        const apiKey = decryptKey(encryptedKey, password); // Key entschlüsseln
+        const apiKey = decryptKey(encryptedKey, password);
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const response = await fetch('https://ai.mimo.org/v1/openai/message', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
+                'api-key': apiKey
             },
-            body: JSON.stringify({
-                model: "gpt-4.1-mini",
-                messages: [
-                    {
-                        role: "system",
-                        content: "Du bist ein JavaScript-Spiel-Generator. Gib nur lauffähigen HTML, CSS und JS Code zurück, ohne Erklärungen."
-                    },
-                    {
-                        role: "user",
-                        content: `Erstelle ein spielbares Spiel basierend auf folgendem Design: ${prompt}`
-                    }
-                ],
-                temperature: 0.7
-            })
+            body: JSON.stringify({ message: `Erstelle ein spielbares Spiel basierend auf: ${prompt}` })
         });
 
         const data = await response.json();
-        let code = data.choices[0].message.content;
+        const code = data.response; // Mimo API liefert Antwort als 'response'
 
-        // Sicherheitsmaßnahmen: direktes Einfügen in iframe
         const blob = new Blob([code], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         gameFrame.src = url;
 
-    } catch (err) {
+    } catch(err) {
         console.error(err);
         alert('Fehler beim Erstellen des Spiels!');
     } finally {
         generateBtn.disabled = false;
-        generateBtn.textContent = '🎨 Spiel erstellen';
+        generateBtn.textContent = 'Spiel erstellen';
     }
 });
