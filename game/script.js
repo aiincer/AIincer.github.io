@@ -1,9 +1,7 @@
 const generateBtn = document.getElementById('generateBtn');
 const gameInput = document.getElementById('gameInput');
 const gameFrame = document.getElementById('gameFrame');
-
-// 🔒 Verschlüsselter Key (erstellt mit Passwort "meinPasswort123")
-const encryptedKey = "U2FsdGVkX19vS1qT3wQK0l7z5V7E4kPfJ7yqI0JbXJU=";
+const encryptedKey = "U2FsdGVkX180KlMclINn2hWoA258BOkAkPwSo1kn8TMlRa2poEqeF3P3blHafxZX=";
 const password = "meinPasswort123";
 
 // Funktion zum Entschlüsseln des API-Keys
