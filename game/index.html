@@ -3,22 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Designer AI</title>
+<title>Mimo AI Game Generator</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>🎮 AI Game Designer</h1>
-    <p>Gib dein Spiel-Design ein, und wir erstellen ein sofort spielbares Spiel!</p>
-    
-    <textarea id="gameInput" placeholder="Beschreibe dein Spiel..."></textarea>
-    <button id="generateBtn">🎨 Spiel erstellen</button>
-    
-    <div id="gameContainer">
-      <iframe id="gameFrame"></iframe>
-    </div>
-  </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-<script src="script.js"></script>
+  <h1>🎮 Mimo AI Game Generator</h1>
+  <textarea id="gameInput" placeholder="Beschreibe dein Spiel..."></textarea><br>
+  <button id="generateBtn">Spiel erstellen</button>
+
+  <iframe id="gameFrame"></iframe>
+
+  <script src="script.js"></script>
 </body>
 </html>
