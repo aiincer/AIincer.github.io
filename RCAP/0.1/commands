@@ -16,7 +16,7 @@
 ~ - manager:
   ~start
     startet die gewählte client side library
-  ~install ^library^
+  ~install ^library^ form ^link^
     installiert client side library
   ~run ^library^
     führt client side library aus
