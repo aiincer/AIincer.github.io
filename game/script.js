@@ -17,7 +17,7 @@ generateBtn.addEventListener('click', async () => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: `Erstelle ein spielbares HTML/CSS/JS Spiel basierend auf: ${prompt}`,
+                message: `Erstelle ein spielbares HTML/CSS/JS Spiel basierend auf: ${prompt}; GIB NUR HTML AUS IN DEM CSS UND JS INTIGRIERT SIND; GIB NUR HTML CODE AUS SONST NICHTS, KEINEN ZUSÄTZLICHEN TEXT!!!!!!!!`,
                 key: lkey
             })
         });
