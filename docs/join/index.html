@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIincer – Join Discord</title>
+<link rel="stylesheet" href="join.css">
+</head>
+<body>
+
+<div class="container">
+  <!-- Discord/AIincer Invite Card -->
+  <div class="discord-card" id="discord-card" onclick="window.open('https://discord.gg/7etBaWZ3qf', '_blank')">
+    <img src="aiincer.png" alt="AIincer Logo" id="server-img">
+    <div class="server-name" id="server-name">AIincer Community</div>
+    <div class="members" id="members">👥 21 Mitglieder</div>
+    <div class="join-btn" id="join-btn">Beitreten</div>
+  </div>
+  <div class="footer">© 2026 AIincer</div>
+</div>
+
+<script>
+// Sofortiger Fade von Blau → Discord-Style mit Grün
+window.addEventListener('DOMContentLoaded', () => {
+  const card = document.getElementById('discord-card');
+  const img = document.getElementById('server-img');
+  const btn = document.getElementById('join-btn');
+  const name = document.getElementById('server-name');
+  const members = document.getElementById('members');
+
+  // Kurzer Timeout, damit Transition greift
+  setTimeout(() => {
+    // Karte auf Discord-Dunkel + grün Glow
+    card.style.background = "#1e1f22";
+    card.style.boxShadow = "0 0 25px #00ff88";
+
+    // Icon Glow grün
+    img.style.boxShadow = "0 0 15px #00ff88";
+
+    // Button Grün
+    btn.style.background = "#00ff88";
+    btn.style.boxShadow = "0 0 15px #00ff88";
+
+    // Servername + Mitglieder grün
+    name.style.color = "#00ff88";
+    name.style.textShadow = "0 0 6px #00ff88";
+    members.style.color = "#aaffcc";
+  }, 10); // praktisch sofort
+});
+</script>
+
+</body>
+</html>
