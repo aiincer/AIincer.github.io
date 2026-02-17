@@ -1,2 +1,2 @@
 # AIinc
-Website für AI-Inc + momy
+Website für AI-Inc + dokumentation
