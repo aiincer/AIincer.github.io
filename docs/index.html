@@ -1,1 +1,55 @@
-comming soon
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIincer – Projekte & Kontakt</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+  <h1>AIincer</h1>
+</header>
+
+<nav>
+  <button onclick="showSection('projects')">🎮 Projekte</button>
+  <button onclick="showSection('contact')">📩 Kontakt</button>
+</nav>
+
+<!-- Projekte Section -->
+<div id="projects" class="section active">
+  <div class="card" onclick="window.location.href='/game'">
+    <h2>AI Game Generator 0.1</h2>
+    <p>Erstelle komplette Spiele aus einer Beschreibung</p>
+  </div>
+</div>
+
+<!-- Kontakt Section -->
+<div id="contact" class="section">
+  <div class="card" onclick="window.location.href='/join'">
+    <h2>Discord</h2>
+    <p>joine unserem Discord-Server</p>
+  </div>
+</div>
+
+<footer>
+  © 2026 AIincer
+</footer>
+
+</div>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
+  });
+  document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
