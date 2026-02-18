@@ -11,34 +11,16 @@ const gameFrame = document.getElementById("gameFrame");
 const gameError = document.getElementById("gameError");
 
 let userKey = "";
-let userCredits = 0;
+let userCredits = 100; // immer 100 Credits
 
-// 🔹 Login / Key prüfen
-loginBtn.addEventListener("click", async () => {
+// 🔹 Login / Key prüfen (nur Dummy, zeigt immer 100 Credits)
+loginBtn.addEventListener("click", () => {
   userKey = userKeyInput.value.trim();
   if(!userKey) return loginError.textContent = "Bitte gib deinen Code ein!";
 
-  try {
-    const res = await fetch("https://shakily-curvy-sofa.mimo.dev/credits", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: userKey })
-    });
-
-    const data = await res.json();
-
-    if(res.ok){
-      userCredits = data.credits;
-      creditCountEl.textContent = userCredits;
-      loginStep.style.display = "none";
-      gameStep.style.display = "block";
-    } else {
-      loginError.textContent = data.error || "Code ungültig";
-    }
-  } catch(err){
-    loginError.textContent = "Server Fehler";
-    console.error(err);
-  }
+  creditCountEl.textContent = userCredits;
+  loginStep.style.display = "none";
+  gameStep.style.display = "block";
 });
 
 // 🔹 Spiel generieren
@@ -48,38 +30,46 @@ generateBtn.addEventListener("click", async () => {
 
   if(!prompt) return gameError.textContent = "Bitte beschreibe dein Spiel!";
 
-  if(userCredits <= 0) return gameError.textContent = "Keine Credits mehr!";
-
   generateBtn.disabled = true;
   generateBtn.textContent = "🎨 Erstelle dein Spiel...";
 
   try {
+    // 🔹 IP-Adresse von der externen Datei abfragen
+    const ipRes = await fetch("https://aiincer.github.io/api/game/0/2/ip.txt");
+    const ipAddress = (await ipRes.text()).trim();
+
+    // 🔹 Check: IP muss mit http beginnen
+    if (!ipAddress.startsWith("http")) {
+      gameError.textContent = "Ungültige IP-Adresse oder Datei nicht gefunden!";
+      generateBtn.disabled = false;
+      generateBtn.textContent = "🎨 Spiel erstellen";
+      return;
+    }
+
+    // 🔹 Spiel generieren Anfrage an die API mit IP
     const res = await fetch("https://shakily-curvy-sofa.mimo.dev/aigenerate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ key: userKey, message: prompt })
+      body: JSON.stringify({ 
+        key: userKey, 
+        message: prompt, 
+        ip: ipAddress // ✅ die geprüfte IP wird gesendet
+      })
     });
 
     const data = await res.json();
 
     if(res.ok && data.response){
-      userCredits = data.remainingCredits;
-      creditCountEl.textContent = userCredits;
-
       const blob = new Blob([data.response], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       gameFrame.src = url;
-
-      if(userCredits <= 0){
-        gameError.textContent = "Du hast keine Credits mehr!";
-      }
     } else {
       gameError.textContent = data.error || "Fehler beim Generieren!";
     }
 
   } catch(err){
     console.error(err);
-    gameError.textContent = "Server Fehler";
+    gameError.textContent = "Server Fehler oder IP-Datei konnte nicht geladen werden!";
   } finally {
     generateBtn.disabled = false;
     generateBtn.textContent = "🎨 Spiel erstellen";
