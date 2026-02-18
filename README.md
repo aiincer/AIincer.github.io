@@ -1,2 +1,2 @@
 # AIinc
-Website für AI-Inc + dokumentation
+Website für AI-Inc + Framework
