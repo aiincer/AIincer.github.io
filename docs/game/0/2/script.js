@@ -1,4 +1,4 @@
-const loginStep = document.getElementById("loginStep"); 
+const loginStep = document.getElementById("loginStep");  
 const gameStep = document.getElementById("gameStep");
 const loginBtn = document.getElementById("loginBtn");
 const userKeyInput = document.getElementById("userKey");
