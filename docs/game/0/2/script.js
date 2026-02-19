@@ -52,7 +52,7 @@ generateBtn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
         key: userKey, 
-        promt: prompt, 
+        prompt: prompt, 
         ip: ipAddress // ✅ die geprüfte IP wird gesendet
       })
     });
