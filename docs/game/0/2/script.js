@@ -47,7 +47,7 @@ generateBtn.addEventListener("click", async () => {
     }
 
     // 🔹 Spiel generieren Anfrage an die API mit IP
-    const res = await fetch("https://shakily-curvy-sofa.mimo.dev/aigenerate", {
+    const res = await fetch(ipAddress, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
