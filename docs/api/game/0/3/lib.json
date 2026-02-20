@@ -1,4 +1,4 @@
-{ "Pong": { "bild": "https://picsum.photos/400/200?1", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] },
-  "Clicker": { "bild": "https://picsum.photos/400/200?1", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] },
-  "Asteroids": { "bild": "https://picsum.photos/400/200?1", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] }
+{ "Pong": { "bild": "https://src/game/0/3/pong.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] },
+  "Clicker": { "bild": "https://src/game/0/3/clicker.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] },
+  "Asteroids": { "bild": "https://src/game/0/3/asteroids.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] }
 }
