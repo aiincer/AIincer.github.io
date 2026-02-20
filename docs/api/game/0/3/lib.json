@@ -1,4 +1,4 @@
-{ "Pong": { "bild": "https://aiincer.github.io/assets/game/0/3/pong.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] },
-  "Clicker": { "bild": "https://aiincer.github.io/assets/game/0/3/clicker.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] },
-  "Asteroids": { "bild": "https://aiincer.github.io/assets/game/0/3/asteroids.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"] ] ] }
+{ "Pong": { "bild": "https://aiincer.github.io/assets/game/0/3/pong.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]]], "link": "https://aiincer.github.io/game/0/3/play?game=o01" },
+  "Clicker": { "bild": "https://aiincer.github.io/assets/game/0/3/clicker.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]]], "link": "https://aiincer.github.io/game/0/3/play?game=o02 },
+  "Asteroids": { "bild": "https://aiincer.github.io/assets/game/0/3/asteroids.png", "tag": [ ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]]], "link": "https://aiincer.github.io/game/0/3/play?game=o03 }
 }
