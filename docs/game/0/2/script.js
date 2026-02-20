@@ -35,9 +35,10 @@ generateBtn.addEventListener("click", async () => {
 
   try {
     // 🔹 IP-Adresse von der externen Datei abfragen
-    const ipRes = await fetch("https://aiincer.github.io/api/game/ip.txt") + "/api/ai";
-    const ipAddress = (await ipRes.text()).trim();
-
+    const ipRes = await fetch("https://aiincer.github.io/api/game/ip.txt");
+    const ipAddressRAW = (await ipRes.text()).trim();
+    const ipAddress = ipAddressRAW + "/api/ai";
+    
     // 🔹 Check: IP muss mit http beginnen
     if (!ipAddress.startsWith("http")) {
       gameError.textContent = "Ungültige IP-Adresse oder Datei nicht gefunden!";
