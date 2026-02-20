@@ -35,7 +35,7 @@ generateBtn.addEventListener("click", async () => {
 
   try {
     // 🔹 IP-Adresse von der externen Datei abfragen
-    const ipRes = await fetch("https://aiincer.github.io/api/game/0/2/ip.txt");
+    const ipRes = await fetch("https://aiincer.github.io/api/game/ip.txt") + "/api/ai";
     const ipAddress = (await ipRes.text()).trim();
 
     // 🔹 Check: IP muss mit http beginnen
