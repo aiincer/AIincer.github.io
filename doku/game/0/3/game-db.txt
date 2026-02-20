@@ -1,6 +1,6 @@
 {"name": {
     "bild": ^bild-link^, 
-    "tag": [^tag^, [^outline-farbe^, (^fill-farbe^)]]
-}}
+    "tag": [[^tag^, [^outline-farbe^, (^fill-farbe^)]], ...]
+}, ...}
 
 //was in () steht gibt es nicht immer
