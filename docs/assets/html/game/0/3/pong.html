@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Episches Grünes Pong mit Glow</title>
+<style>
+    body {
+        margin: 0;
+        background-color: #0a0f0a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #0f0;
+        font-family: 'Arial', sans-serif;
+        user-select: none;
+    }
+    canvas {
+        border: 3px solid #0f0;
+        background-color: #031003;
+        box-shadow: 0 0 20px #0f0, 0 0 40px #39ff14, 0 0 60px #0f0;
+    }
+</style>
+</head>
+<body>
+<canvas id="pong" width="800" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById("pong");
+const ctx = canvas.getContext("2d");
+
+const paddleWidth = 15, paddleHeight = 100, ballSize = 15;
+
+// Spieler Paddle
+const player = { x: 0, y: canvas.height/2 - paddleHeight/2, width: paddleWidth, height: paddleHeight, dy: 0, speed: 6 };
+
+// Bot Paddle
+const bot = { x: canvas.width - paddleWidth, y: canvas.height/2 - paddleHeight/2, width: paddleWidth, height: paddleHeight, speed: 4 };
+
+// Ball
+const ball = {
+    x: canvas.width/2 - ballSize/2,
+    y: canvas.height/2 - ballSize/2,
+    size: ballSize,
+    dx: 5 * (Math.random() > 0.5 ? 1 : -1),
+    dy: 3 * (Math.random() > 0.5 ? 1 : -1),
+    trail: []
+};
+
+// Punkte
+let playerScore = 0;
+let botScore = 0;
+
+// Steuerung
+document.addEventListener("keydown", e => {
+    if(e.key === "ArrowUp") player.dy = -player.speed;
+    if(e.key === "ArrowDown") player.dy = player.speed;
+});
+document.addEventListener("keyup", e => {
+    if(e.key === "ArrowUp" || e.key === "ArrowDown") player.dy = 0;
+});
+
+// Zeichnen
+function drawRect(x, y, w, h, color, glow=false) {
+    ctx.fillStyle = color;
+    ctx.shadowColor = glow ? color : "transparent";
+    ctx.shadowBlur = glow ? 20 : 0;
+    ctx.fillRect(x, y, w, h);
+    ctx.shadowBlur = 0; // reset
+}
+
+function drawCircle(x, y, r, color, glow=false) {
+    ctx.fillStyle = color;
+    ctx.shadowColor = glow ? color : "transparent";
+    ctx.shadowBlur = glow ? 25 : 0;
+    ctx.beginPath();
+    ctx.arc(x + r/2, y + r/2, r/2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowBlur = 0;
+}
+
+function drawNet() {
+    const netWidth = 4, netHeight = 20;
+    for(let i = 0; i < canvas.height; i += netHeight*2) {
+        drawRect(canvas.width/2 - netWidth/2, i, netWidth, netHeight, "#0f0", true);
+    }
+}
+
+function drawText(text, x, y) {
+    ctx.fillStyle = "#39ff14";
+    ctx.shadowColor = "#39ff14";
+    ctx.shadowBlur = 15;
+    ctx.font = "32px Arial";
+    ctx.fillText(text, x, y);
+    ctx.shadowBlur = 0;
+}
+
+// Kollisionsprüfung
+function collision(p, b) {
+    return b.x < p.x + p.width && b.x + b.size > p.x &&
+           b.y < p.y + p.height && b.y + b.size > p.y;
+}
+
+// Update Ball
+function updateBall() {
+    // Ball Trail
+    ball.trail.push({x: ball.x, y: ball.y});
+    if(ball.trail.length > 15) ball.trail.shift();
+
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+
+    // Oben/Unten kollidieren
+    if(ball.y <= 0 || ball.y + ball.size >= canvas.height) {
+        ball.dy *= -1;
+    }
+
+    // Paddle Kollidieren
+    if(collision(player, ball) || collision(bot, ball)) {
+        ball.dx *= -1;
+    }
+
+    // Punkte
+    if(ball.x < 0) {
+        botScore++;
+        resetBall();
+    }
+    if(ball.x + ball.size > canvas.width) {
+        playerScore++;
+        resetBall();
+    }
+}
+
+// Bot KI
+function updateBot() {
+    const target = ball.y - bot.height/2 + ball.size/2;
+    if(bot.y < target) bot.y += bot.speed;
+    else if(bot.y > target) bot.y -= bot.speed;
+
+    if(bot.y < 0) bot.y = 0;
+    if(bot.y + bot.height > canvas.height) bot.y = canvas.height - bot.height;
+}
+
+// Reset Ball
+function resetBall() {
+    ball.x = canvas.width/2 - ball.size/2;
+    ball.y = canvas.height/2 - ball.size/2;
+    ball.dx = 5 * (Math.random() > 0.5 ? 1 : -1);
+    ball.dy = 3 * (Math.random() > 0.5 ? 1 : -1);
+    ball.trail = [];
+}
+
+// Update Spieler
+function updatePlayer() {
+    player.y += player.dy;
+    if(player.y < 0) player.y = 0;
+    if(player.y + player.height > canvas.height) player.y = canvas.height - player.height;
+}
+
+// Render
+function render() {
+    drawRect(0, 0, canvas.width, canvas.height, "#031003");
+
+    drawNet();
+    drawRect(player.x, player.y, player.width, player.height, "#0f0", true);
+    drawRect(bot.x, bot.y, bot.width, bot.height, "#0f0", true);
+
+    // Ball Trail
+    for(let i = 0; i < ball.trail.length; i++) {
+        let t = ball.trail[i];
+        let alpha = i/ball.trail.length;
+        drawCircle(t.x, t.y, ball.size, `rgba(57,255,20,${alpha})`, true);
+    }
+
+    drawCircle(ball.x, ball.y, ball.size, "#39ff14", true);
+
+    drawText(playerScore, canvas.width/4, 50);
+    drawText(botScore, 3*canvas.width/4, 50);
+}
+
+// Game Loop
+function gameLoop() {
+    updatePlayer();
+    updateBot();
+    updateBall();
+    render();
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+</script>
+</body>
+</html>
