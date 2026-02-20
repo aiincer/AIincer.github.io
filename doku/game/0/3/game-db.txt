@@ -1,6 +1,11 @@
 {"name": {
     "bild": ^bild-link^, 
-    "tag": [[^tag^, [^outline-farbe^, (^fill-farbe^)]], ...]
+    "tag": [
+        [^tag^, [
+            ^outline-farbe^, 
+            (^fill-farbe^ -> "transparent")]
+            (^text-farbe^ -> "weiß")
+        ], ...]
 }, ...}
 
-//was in () steht gibt es nicht immer
+//was in () steht gibt es nicht immer, mit (^was es ist^ -> "standatwert"), standatwer ist der wert der genommen wird, wenn nichts da steht
