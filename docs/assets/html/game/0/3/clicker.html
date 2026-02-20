@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Neon Clicker</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #1a0a2a;
+    font-family: sans-serif;
+  }
+  canvas {
+    display: block;
+    cursor: crosshair;
+  }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let score = 0;
+let mouseX = canvas.width/2;
+let mouseY = canvas.height/2;
+
+class Circle {
+  constructor(x, y, radius, value) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.value = value;
+    this.innerRadius = 0;
+    this.clicksNeeded = value;
+    this.color = 'rgba(200, 0, 255, 0.8)';
+    this.innerColor = 'rgba(255, 150, 255, 0.5)';
+    this.speed = 0.2 + Math.random()*0.1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.innerRadius, 0, Math.PI*2);
+    ctx.fillStyle = this.innerColor;
+    ctx.fill();
+    
+    if (this.clicksNeeded > 0) {
+      ctx.fillStyle = "#fff";
+      ctx.font = `${this.radius/2}px sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(this.clicksNeeded, this.x, this.y);
+    }
+  }
+  
+  update() {
+    if (this.innerRadius < this.radius) {
+      this.innerRadius += this.speed;
+    } else {
+      score -= this.clicksNeeded;
+      this.clicksNeeded = 0;
+    }
+  }
+}
+
+let circles = [];
+const maxCircles = 4;
+
+function spawnCircle() {
+  if (circles.length >= maxCircles) return;
+  const radius = 50 + Math.random()*30;
+  const x = radius + Math.random()*(canvas.width - 2*radius);
+  const y = radius + Math.random()*(canvas.height - 2*radius);
+  const value = 3 + Math.floor(Math.random()*5);
+  circles.push(new Circle(x, y, radius, value));
+}
+
+// initial 3–4 Kreise
+for (let i=0;i<maxCircles;i++) spawnCircle();
+
+// Click Animation
+let clickAnimations = [];
+class ClickAnim {
+  constructor(x,y) {
+    this.x = x;
+    this.y = y;
+    this.alpha = 1;
+    this.radius = 10;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius,0,Math.PI*2);
+    ctx.strokeStyle = `rgba(255,255,255,${this.alpha})`;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    this.radius += 2;
+    this.alpha -= 0.03;
+  }
+}
+
+// Spiel Loop
+function animate() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  
+  ctx.fillStyle = "#fff";
+  ctx.font = "24px sans-serif";
+  ctx.fillText("Score: "+score, 20,30);
+  
+  circles.forEach(c=>{
+    c.update();
+    c.draw();
+  });
+  
+  clickAnimations.forEach((c,i)=>{
+    c.draw();
+    if (c.alpha<=0) clickAnimations.splice(i,1);
+  });
+  
+  circles = circles.filter(c => c.clicksNeeded >0);
+  
+  while (circles.length < maxCircles) spawnCircle();
+  
+  requestAnimationFrame(animate);
+}
+
+// Klick-Mechanik
+function handleClick(x, y) {
+  let clicked = false;
+  circles.forEach(c=>{
+    const dx = x - c.x;
+    const dy = y - c.y;
+    if (Math.sqrt(dx*dx+dy*dy) <= c.radius) {
+      c.clicksNeeded--;
+      score++;
+      clicked = true;
+    }
+  });
+  if (!clicked) score--;
+  clickAnimations.push(new ClickAnim(x,y));
+}
+
+// Mausposition speichern
+canvas.addEventListener("mousemove", (e)=>{
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+canvas.addEventListener("click",(e)=>{
+  handleClick(e.clientX, e.clientY);
+});
+
+// Tastatur-Mechanik: Klick auf aktuelle Mausposition
+document.addEventListener("keydown",(e)=>{
+  handleClick(mouseX, mouseY);
+});
+
+animate();
+</script>
+</body>
+</html>
