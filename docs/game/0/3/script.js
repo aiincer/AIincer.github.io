@@ -10,9 +10,8 @@ function renderGames(games) {
     card.className = "card";
 
     if (game.link) {
-      card.href = game.link;          // Link setzen
-      card.target = "_blank";         // öffnet in neuem Tab, optional
-      card.rel = "noopener noreferrer"; // Sicherheitsbest Practice
+      card.href = game.link;  
+      // kein target → öffnet im selben Tab
     }
 
     const img = document.createElement("img");
