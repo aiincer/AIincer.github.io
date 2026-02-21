@@ -1,4 +1,4 @@
-{ "o01": { "link": "https://aiincer.github.io/assets/html/game/0/3/pong.html", "keys": 1 },
+{ "o01": { "link": "https://aiincer.github.io/assets/html/game/0/3/pong.html" },
   "o02": { "link": "https://aiincer.github.io/assets/html/game/0/3/clicker.html" },
-  "o03": { "link": "https://aiincer.github.io/assets/html/game/0/3/asteroids.html", "keys": 1}
+  "o03": { "link": "https://aiincer.github.io/assets/html/game/0/3/asteroids.html" }
 }
