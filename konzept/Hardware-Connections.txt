@@ -1,8 +1,13 @@
-Connections:
-  Router
-  Switch (R)
-Server:
-  Online-Server (R)
-  RCAP-Server (S)
-  Devline-Server (S)
-  AI-Server (S)
+Netztwerke:
+  Intern
+    Router - R1
+  Extern
+    Router - R2
+Geräte:
+  R1               - Router
+  R2               - Router
+  S1               - Switch
+  C  - Controller  - Macbook
+  bM - Main-Server - Mac Mini
+  Im - AI-temp     - IMac
+  AI - AI-Server   - Custom-Server
