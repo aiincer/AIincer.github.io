@@ -16,10 +16,20 @@
 </header>
 
 <nav>
-  <button onclick="showSection('projects')">🎮 Projekte</button>
-  <button onclick="showSection('contact')">📩 Kontakt</button>
+  <button onclick="showSection('releases')">Releases</button>
+  <button onclick="showSection('projects')">Projekte</button>
+  <button onclick="showSection('partner')">Partner</button>
+  <button onclick="showSection('contact')">Kontakt</button>
 </nav>
-
+  
+<!-- Releases Section -->
+<div id="releases" class="section">
+  <div class="card" onclick="window.location.href='/game/0/3'">
+    <h2>AI Game Generator 0.3</h2>
+    <p>Erstelle Spiele aus einer Beschreibung und veröffentliche sie im Game-Katalog</p>
+  </div>
+</div>
+  
 <!-- Projekte Section -->
 <div id="projects" class="section active">
   <div class="card" onclick="window.location.href='/game/0/1'">
@@ -35,7 +45,15 @@
     <p>Erstelle Spiele aus einer Beschreibung und veröffentliche sie im Game-Katalog</p>
   </div>
 </div>
-
+  
+<!-- Rartner Section -->
+<div id="partner" class="section">
+  <div class="card" onclick="window.location.href='https://cattech.ct.ws/'">
+    <h2>CatTech</h2>
+    <p></p>
+  </div>
+</div>
+  
 <!-- Kontakt Section -->
 <div id="contact" class="section">
   <div class="card" onclick="window.location.href='/join'">
