@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Epic Neon Tetris V2</title>
+<style>
+  body {
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    color: #0ff;
+    text-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
+    margin-bottom: 10px;
+  }
+  #tetris {
+    position: relative;
+    width: 220px;
+    height: 440px;
+    background: #111;
+    border: 4px solid #0ff;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    gap: 1px;
+    box-shadow: 0 0 20px #0ff inset;
+  }
+  .cell {
+    width: 100%;
+    height: 100%;
+    background: #111;
+    border: 1px solid #222; /* Gitter sichtbar */
+    border-radius: 2px;
+    transition: 0.1s;
+  }
+  #controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    background: #0ff;
+    color: #000;
+  }
+  #score {
+    margin-top: 20px;
+    font-size: 22px;
+    text-shadow: 0 0 15px #0ff;
+  }
+</style>
+</head>
+<body>
+
+<h1>Epic Neon Tetris V2</h1>
+<div id="tetris"></div>
+<div id="score">Score: 0</div>
+<div id="controls">
+  <button id="leftBtn">⬅️</button>
+  <button id="rotateBtn">🔄</button>
+  <button id="rightBtn">➡️</button>
+  <button id="downBtn">⬇️</button>
+</div>
+
+<script>
+const cols = 10;
+const rows = 20;
+const tetris = document.getElementById('tetris');
+let grid = [];
+let score = 0;
+const scoreDisplay = document.getElementById('score');
+
+const colors = ['#ff0080','#00ff80','#0080ff','#ffdd00','#ff00ff','#ff6600','#00ffff'];
+
+// Grid erstellen
+for(let i=0;i<rows*cols;i++){
+  const cell = document.createElement('div');
+  cell.classList.add('cell');
+  tetris.appendChild(cell);
+  grid.push(cell);
+}
+
+// Shapes in 4 Rotationen (klassisch Tetris)
+const shapes = [
+  // L Shape
+  {rotations:[
+    [1, cols+1, cols*2+1, 2],
+    [cols, cols+1, cols+2, cols*2],
+    [1, cols+1, cols*2+1, cols*2],
+    [cols, cols*2, cols*2+1, cols*2+2]
+  ], color: colors[0]},
+  // O Shape
+  {rotations:[
+    [0,1,cols,cols+1],
+    [0,1,cols,cols+1],
+    [0,1,cols,cols+1],
+    [0,1,cols,cols+1]
+  ], color: colors[1]},
+  // T Shape
+  {rotations:[
+    [1, cols, cols+1, cols+2],
+    [1, cols+1, cols+2, cols*2+1],
+    [cols, cols+1, cols+2, cols*2+1],
+    [1, cols, cols+1, cols*2+1]
+  ], color: colors[2]},
+  // Z Shape
+  {rotations:[
+    [0,1,cols+1,cols+2],
+    [1, cols, cols+1, cols*2],
+    [0,1,cols+1,cols+2],
+    [1, cols, cols+1, cols*2]
+  ], color: colors[3]},
+  // S Shape
+  {rotations:[
+    [1,2,cols,cols+1],
+    [0, cols, cols+1, cols*2+1],
+    [1,2,cols,cols+1],
+    [0, cols, cols+1, cols*2+1]
+  ], color: colors[4]},
+  // I Shape
+  {rotations:[
+    [0, cols, cols*2, cols*3],
+    [cols, cols+1, cols+2, cols+3],
+    [0, cols, cols*2, cols*3],
+    [cols, cols+1, cols+2, cols+3]
+  ], color: colors[5]},
+  // J Shape
+  {rotations:[
+    [2, cols+2, cols*2+2, cols*2+1],
+    [cols, cols+1, cols+2, 2],
+    [1, cols+1, cols*2+1, cols*2],
+    [cols, cols+1, cols+2, cols*2+2]
+  ], color: colors[6]}
+];
+
+let currentShape, currentRotation, currentPos;
+
+// Neue Shape starten
+function newShape(){
+  const rand = Math.floor(Math.random()*shapes.length);
+  currentShape = shapes[rand];
+  currentRotation = 0;
+  currentPos = 4;
+  if(collision()){ // Game Over
+    alert("💀 Game Over! Score: "+score);
+    grid.forEach(cell=>cell.classList.remove('filled','taken'));
+    grid.forEach(cell=>cell.style.background='#111');
+    score=0;
+    scoreDisplay.textContent = "Score: 0";
+  }
+  draw();
+}
+
+// Zeichnen
+function draw(){
+  undraw();
+  currentShape.rotations[currentRotation].forEach(index=>{
+    const cellIndex = index + currentPos;
+    if(grid[cellIndex]){
+      grid[cellIndex].classList.add('filled');
+      grid[cellIndex].style.background = currentShape.color;
+    }
+  });
+}
+
+// Entfernen
+function undraw(){
+  grid.forEach(cell=>{
+    if(!cell.classList.contains('taken')){
+      cell.classList.remove('filled');
+      cell.style.background='#111';
+    }
+  });
+}
+
+// Bewegen
+function move(dir){
+  currentPos+=dir;
+  if(collision()) currentPos-=dir;
+  draw();
+}
+
+// Rotieren
+function rotate(){
+  const oldRotation = currentRotation;
+  currentRotation=(currentRotation+1)%currentShape.rotations.length;
+  if(collision()) currentRotation=oldRotation;
+  draw();
+}
+
+// Sofort fallen
+function drop(){
+  while(!collision()){
+    currentPos+=cols;
+  }
+  currentPos-=cols;
+  freeze();
+  newShape();
+  draw();
+}
+
+// Kollisionscheck
+function collision(){
+  return currentShape.rotations[currentRotation].some(index=>{
+    const cellIndex = index+currentPos;
+    const x = cellIndex%cols;
+    const y = Math.floor(cellIndex/cols);
+    return (x<0 || x>=cols || y>=rows || (grid[cellIndex] && grid[cellIndex].classList.contains('taken')));
+  });
+}
+
+// Shape liegen lassen
+function freeze(){
+  currentShape.rotations[currentRotation].forEach(index=>{
+    const cellIndex = index+currentPos;
+    grid[cellIndex].classList.add('taken');
+    grid[cellIndex].style.background = currentShape.color;
+  });
+  // Reihen löschen
+  for(let r=0;r<rows;r++){
+    let full = true;
+    for(let c=0;c<cols;c++){
+      if(!grid[r*cols+c].classList.contains('taken')) full=false;
+    }
+    if(full){
+      for(let c=0;c<cols;c++){
+        grid[r*cols+c].classList.remove('taken','filled');
+        grid[r*cols+c].style.background='#111';
+      }
+      const removed = grid.splice(r*cols,cols);
+      grid = removed.concat(grid);
+      grid.forEach(cell=>tetris.appendChild(cell));
+      score+=10;
+      scoreDisplay.textContent = "Score: "+score;
+    }
+  }
+}
+
+// Game Loop: automatisch runterfallen
+let gameInterval = setInterval(()=>{
+  currentPos+=cols;
+  if(collision()){
+    currentPos-=cols;
+    freeze();
+    newShape();
+  }
+  draw();
+}, 800);
+
+// Button Steuerung
+document.getElementById('leftBtn').addEventListener('click',()=>move(-1));
+document.getElementById('rightBtn').addEventListener('click',()=>move(1));
+document.getElementById('rotateBtn').addEventListener('click',rotate);
+document.getElementById('downBtn').addEventListener('click',drop);
+
+// Start
+newShape();
+</script>
+
+</body>
+</html>
