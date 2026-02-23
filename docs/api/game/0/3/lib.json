@@ -7,13 +7,13 @@
   "Clicker": { 
     "bild": "https://aiincer.github.io/assets/png/game/0/3/clicker.png", 
     "tag": [ 
-      ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]]
+      ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]],
       ["official", ["#0f6cf1", "#a7c8ff", "#000000"]]], 
     "link": "https://aiincer.github.io/game/0/3/play?game=o02" },
   "Asteroids": { 
     "bild": "https://aiincer.github.io/assets/png/game/0/3/asteroids.png", 
     "tag": [ 
-      ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]]
+      ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]],
       ["official", ["#0f6cf1", "#a7c8ff", "#000000"]]], 
     "link": "https://aiincer.github.io/game/0/3/play?game=o03" }
 }
