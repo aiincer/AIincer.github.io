@@ -1,4 +1,4 @@
-{ "Pong": { 
+{ "Pong": {  
     "bild": "https://aiincer.github.io/assets/png/game/0/3/pong.png", 
     "tag": [ 
       ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]],
