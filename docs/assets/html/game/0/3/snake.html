@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Snake</title>
+
+<style>
+body{
+  margin:0;
+  padding:0;
+  background:#050510;
+  color:#0ff;
+  font-family:sans-serif;
+  text-align:center;
+}
+
+h2{
+  text-shadow:0 0 15px #0ff;
+  margin-top:10px;
+}
+
+canvas{
+  background:#070720;
+  border:3px solid #0ff;
+  box-shadow:0 0 30px #0ff inset,0 0 40px #0ff;
+  display:block;
+  margin:10px auto;
+}
+
+#score{
+  margin:10px;
+  font-size:20px;
+  text-shadow:0 0 10px #0ff;
+}
+
+/* KEY-PAD */
+#pad{
+  width:200px;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+
+.btn{
+  height:60px;
+  border-radius:12px;
+  border:2px solid #0ff;
+  background:#060620;
+  box-shadow:0 0 15px #0ff inset,0 0 20px #0ff;
+  font-size:24px;
+  color:#0ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  user-select:none;
+  touch-action:none;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Neon Snake</h2>
+<div id="score">Score: 0</div>
+<canvas id="game" width="320" height="320"></canvas>
+
+<div id="pad">
+  <div></div>
+  <div class="btn" id="up">▲</div>
+  <div></div>
+  <div class="btn" id="left">◀</div>
+  <div></div>
+  <div class="btn" id="right">▶</div>
+  <div></div>
+  <div class="btn" id="down">▼</div>
+  <div></div>
+</div>
+
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+const grid=20;
+const cells=16;
+
+let snake=[{x:8,y:8}];
+let dir={x:1,y:0};
+let apple={x:0,y:0};
+let score=0;
+
+function newApple(){
+  let ok=false;
+  while(!ok){
+    ok=true;
+    apple.x=Math.floor(Math.random()*cells);
+    apple.y=Math.floor(Math.random()*cells);
+    for(let p of snake){
+      if(p.x===apple.x && p.y===apple.y){ ok=false; break; }
+    }
+  }
+}
+
+function loop(){
+  const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+
+  if(head.x<0||head.y<0||head.x>=cells||head.y>=cells)
+    return gameOver();
+
+  for(let p of snake){
+    if(p.x===head.x && p.y===head.y)
+      return gameOver();
+  }
+
+  snake.unshift(head);
+
+  if(head.x===apple.x && head.y===apple.y){
+    score++;
+    document.getElementById("score").textContent="Score: "+score;
+    newApple();
+  }else snake.pop();
+
+  draw();
+  setTimeout(loop,Math.max(70,150-snake.length*3));
+}
+
+function draw(){
+  ctx.clearRect(0,0,320,320);
+
+  // Apfel
+  ctx.fillStyle="#ff0080";
+  ctx.shadowColor="#ff0080";
+  ctx.shadowBlur=20;
+  ctx.fillRect(apple.x*grid,apple.y*grid,grid-1,grid-1);
+
+  // Snake
+  ctx.fillStyle="#0ff";
+  ctx.shadowColor="#0ff";
+  ctx.shadowBlur=15;
+  snake.forEach(p=>{
+    ctx.fillRect(p.x*grid,p.y*grid,grid-1,grid-1);
+  });
+}
+
+function gameOver(){
+  alert("Game Over! Score: "+score);
+  location.reload();
+}
+
+newApple();
+loop();
+
+/* Keypad Steuerung */
+function setDir(x,y){
+  if(snake.length>1){
+    if(dir.x===-x && dir.y===-y) return;
+  }
+  dir={x:x,y:y};
+}
+
+document.getElementById("up").ontouchstart=()=>setDir(0,-1);
+document.getElementById("down").ontouchstart=()=>setDir(0,1);
+document.getElementById("left").ontouchstart=()=>setDir(-1,0);
+document.getElementById("right").ontouchstart=()=>setDir(1,0);
+</script>
+
+</body>
+</html>
