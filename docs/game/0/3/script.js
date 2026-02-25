@@ -81,7 +81,7 @@ async function loadGames() {
   }
 
   if (ip) {
-    const data2 = await fetchJSON(`https://${ip}/api/game/0/3/lib`);
+    const data2 = await fetchJSON(`${ip}/api/game/0/3/lib`);
     combinedGames = { ...combinedGames, ...data2 };
   }
 
