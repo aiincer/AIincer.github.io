@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>&lt;inoffiziell&gt; Citrus Client</title>
+<link rel="icon" type="image/png" href="https://aiincer.github.io/assets/png/host/0/citrus/logo.png">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background-color: #e8f5e9;
+        color: #333;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none; 
+        color: #333;
+    }
+    a:hover {
+        color: inherit; 
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 50px;
+        background-color: #ffffff;
+        border-bottom: 2px solid #a5d6a7;
+    }
+
+    .logo img {
+        height: 50px;
+        cursor: pointer;
+    }
+
+    nav ul {
+        list-style: none;
+        display: flex;
+        gap: 25px;
+    }
+
+    nav ul li {
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .hero {
+        height: calc(100vh - 80px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: #2e7d32;
+    }
+
+    .hero p {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        color: #4caf50;
+    }
+
+    .hero .cta-button {
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        color: #fff;
+        background-color: #66bb6a;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .hero .cta-button:hover {
+        background-color: #388e3c;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        color: #388e3c;
+        border-top: 1px solid #a5d6a7;
+        margin-top: 50px;
+    }
+
+    @media(max-width: 768px){
+        header {
+            flex-direction: column;
+            gap: 10px;
+        }
+        nav ul {
+            gap: 15px;
+        }
+        .hero h1 {
+            font-size: 2.2rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <a href="https://aiincer.github.io/host/0/citrus/">
+            <img src="https://aiincer.github.io/assets/png/host/0/citrus/logo.png" alt="Citrus Client Logo">
+        </a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="https://aiincer.github.io/host/0/citrus/over">Übersicht</a></li>
+            <li><a href="https://aiincer.github.io/host/0/citrus/download">Download</a></li>
+            <li><a href="https://aiincer.github.io/host/0/citrus/login">Login</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Willkommen beim Citrus Client</h1>
+    <p>Einfach, übersichtlich und zuverlässig</p>
+    <a href="https://aiincer.github.io/host/0/citrus/download" class="cta-button">Jetzt herunterladen</a>
+</section>
+
+<footer>
+    &copy; noname-coding für Citrus Client
+</footer>
+
+</body>
+</html>
