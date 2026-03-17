@@ -1,0 +1,34 @@
+{
+  "header": {
+    "type": ^file-type (*1)^
+    "meta": {
+      "date": ^datum + uhrzeit^
+      "programm": ^*2^
+    }
+  }
+  "data": *3
+}
+
+*1:
+  -"gg2": gradient-generator (version 2)
+*2: programm, mit dem es erstellt wurde, z.B.:
+  -Gradient-Generator-v2-web
+*3: abhängig vom Filetype:
+  -"gg2" **1
+
+**1:
+  {
+    "size": [
+      ^x-größe^
+      ^y-größe^
+    ]
+    "points": [
+      {
+        ^x^
+        ^y^
+        ^color (hex)^
+      }...
+    ]
+  }
+
+// "..." heißt, dass sich das mehrfach wiederholt (z.b. bei "{^inhalt^}..." wiederholt sich das {} mit dem inhalt mehrmals)
