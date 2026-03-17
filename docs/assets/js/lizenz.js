@@ -1,2 +1,4 @@
-const lizenz-feld = GetElementByID("lizenz");
-lizenz-feld.innerHTML = "© 2026 AIincer";
+document.addEventListener("DOMContentLoaded", () => {
+  const lizenzFeld = document.getElementById("lizenz");
+  lizenzFeld.innerHTML = "© 2026 AIincer";
+});
