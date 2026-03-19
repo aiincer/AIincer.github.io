@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Art-Tools</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f0f1b, #1a1a2e);
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 95%;
+  max-width: 800px;
+  padding: 40px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  box-shadow: 0 0 40px rgba(0,255,255,0.2);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(90deg, #00f5ff, #ff00c8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section {
+  display: block;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.card {
+  background: rgba(255,255,255,0.08);
+  padding: 25px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(0,255,255,0.3);
+}
+
+footer {
+  text-align: center;
+  margin-top: 20px;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+  <h1>Art-Tools</h1>
+</header>
+
+<!-- Auswahlfeld Section -->
+<div id="tools" class="section active">
+  <div class="card" onclick="window.location.href='/art/verlauf/1'">
+    <h2>Farbverlauf-Generator 0.1</h2>
+    <p>Erstellt 2-Dimensionale Farbverläufe (beta 1)</p>
+  </div>
+  <div class="card" onclick="window.location.href='/art/verlauf/2'">
+    <h2>Farbverlauf-Generator 0.2</h2>
+    <p>Erstellt 2-Dimensionale Farbverläufe (beta 2):</p>
+    <p>    -speichern und laden von Projekten verfügbar</p>
+    <p>    -Menü für jeden Punkt hinzugefügt</p>
+  </div>
+</div>
+
+<footer id="lizenz"></footer>
+
+</div>
+<script src="/assets/js/lizenz.js"></script>
+
+</body>
+</html>
