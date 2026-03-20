@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Green Sliding Puzzle</title>
+
+<style>
+:root{
+    --green:#39ff14;
+    --red:#ff3b3b;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:Segoe UI, sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+        radial-gradient(circle at top, #00ff8844, transparent 60%),
+        linear-gradient(135deg, #02100a, #063020);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.game{
+    background:rgba(0,0,0,0.5);
+    backdrop-filter:blur(14px);
+    border-radius:28px;
+    padding:30px;
+    box-shadow:0 0 40px #00ff8855;
+}
+
+h1{
+    margin:0 0 20px;
+    text-align:center;
+    letter-spacing:3px;
+    color:var(--green);
+    text-shadow:0 0 20px var(--green);
+}
+
+.board{
+    position:relative;
+    width:450px;
+    height:450px;
+}
+
+.tile{
+    position:absolute;
+    width:80px;
+    height:80px;
+    border-radius:16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2em;
+    font-weight:700;
+
+    background:linear-gradient(145deg,#0aff7b66,#003b22);
+    cursor:pointer;
+    user-select:none;
+
+    transition:
+        transform 0.35s cubic-bezier(.22,.61,.36,1),
+        box-shadow 0.25s,
+        background 0.25s;
+}
+
+/* RICHTIG */
+.tile.correct{
+    box-shadow:
+        inset 0 0 12px #0aff7b88,
+        0 0 20px var(--green);
+}
+
+/* FALSCH */
+.tile.wrong{
+    background:linear-gradient(145deg,#ff3b3b55,#3b0000);
+    box-shadow:
+        inset 0 0 12px #ff3b3b88,
+        0 0 20px var(--red);
+}
+
+button{
+    display:block;
+    margin:20px auto 0;
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    font-weight:700;
+    cursor:pointer;
+    background:linear-gradient(90deg,#39ff14,#0aff7b);
+    color:#003b22;
+    box-shadow:0 0 20px #39ff14aa;
+}
+
+.win{
+    text-align:center;
+    margin-top:14px;
+    color:#39ff14;
+    font-size:1.3em;
+    text-shadow:0 0 15px #39ff14;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+    <h1>GREEN SLIDE</h1>
+    <div class="board" id="board"></div>
+    <button onclick="shuffle()">NEU MISCHEN</button>
+    <div class="win" id="status"></div>
+</div>
+
+<script>
+const size = 5;
+const tileSize = 90;
+
+const board = document.getElementById("board");
+const status = document.getElementById("status");
+
+let tiles = [];
+let elements = new Map();
+
+function init(){
+    tiles = [];
+    for(let i=1;i<=24;i++) tiles.push(i);
+    tiles.push(null);
+    createTiles();
+    shuffle();
+}
+
+function createTiles(){
+    board.innerHTML="";
+    elements.clear();
+
+    for(let i=1;i<=24;i++){
+        const el = document.createElement("div");
+        el.className = "tile";
+        el.textContent = i;
+        el.onclick = ()=>tryMove(i);
+        board.appendChild(el);
+        elements.set(i, el);
+    }
+}
+
+function shuffle(){
+    status.textContent="";
+    do{
+        tiles.sort(()=>Math.random()-0.5);
+    }while(!isSolvable());
+    updatePositions();
+}
+
+function updatePositions(){
+    tiles.forEach((value,index)=>{
+        if(value === null) return;
+
+        const el = elements.get(value);
+        const x = (index % size) * tileSize;
+        const y = Math.floor(index / size) * tileSize;
+        el.style.transform = `translate(${x}px, ${y}px)`;
+
+        // ✔️ RICHTIG / ❌ FALSCH
+        el.classList.remove("correct","wrong");
+        if(index === value - 1){
+            el.classList.add("correct");
+        }else{
+            el.classList.add("wrong");
+        }
+    });
+
+    if(isSolved()){
+        status.textContent="💚 ALLES RICHTIG 💚";
+    }
+}
+
+function tryMove(value){
+    const index = tiles.indexOf(value);
+    const empty = tiles.indexOf(null);
+
+    const valid = [
+        empty - 1,
+        empty + 1,
+        empty - size,
+        empty + size
+    ];
+
+    if(valid.includes(index)){
+        tiles[empty] = value;
+        tiles[index] = null;
+        updatePositions();
+    }
+}
+
+function isSolved(){
+    for(let i=0;i<24;i++){
+        if(tiles[i] !== i+1) return false;
+    }
+    return tiles[24] === null;
+}
+
+function isSolvable(){
+    let inv = 0;
+    const arr = tiles.filter(t=>t!==null);
+    for(let i=0;i<arr.length;i++){
+        for(let j=i+1;j<arr.length;j++){
+            if(arr[i] > arr[j]) inv++;
+        }
+    }
+    const emptyRow = Math.floor(tiles.indexOf(null)/size);
+    return (inv + emptyRow) % 2 === 0;
+}
+
+init();
+</script>
+
+</body>
+</html>
