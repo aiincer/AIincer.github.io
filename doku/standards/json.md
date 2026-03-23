@@ -1,5 +1,5 @@
 ```markdown
--<name> - <type>(:<more>) - <zusätze><erklärung>
+-<name> - <type>:<more> - <zusätze><erklärung>
 ```
 - name:
   - der name des Elements in json
@@ -7,7 +7,7 @@
   - der Datentyp des Elements
   - Datentypen: *1
 - more:
-  - standart-wert
+  - länge
 - Zusätze:
   - *2
 - erklärung:
@@ -25,3 +25,6 @@
 *2
 - standartwert:
   - (->^standartwert^)
+- variirende Länge:
+  - bei more statt einer zahl >
+  - (>^kurz^-^lang^)
