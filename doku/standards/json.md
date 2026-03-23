@@ -24,6 +24,7 @@
 
 *2
 - standartwert:
+  - hinter dem Datentypen () für gibt es nicht immer
   - (->^standartwert^)
 - variirende Länge:
   - bei more statt einer zahl >
