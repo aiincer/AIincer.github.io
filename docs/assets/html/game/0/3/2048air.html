@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>AIincer</title>
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #faf8ef;
+}
+#game {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 20px auto;
+  background: #bbada0;
+  border-radius: 10px;
+}
+.tile {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  color: #776e65;
+}
+#controls button {
+  font-size: 20px;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #8f7a66;
+  color: white;
+  cursor: pointer;
+}
+#controls button:hover { background: #a08974; }
+</style>
+</head>
+<body>
+
+<h1>2048 air</h1>
+<div id="game"></div>
+<div id="controls">
+  <button onclick="move('up')">⬆️</button><br>
+  <button onclick="move('left')">⬅️</button>
+  <button onclick="move('down')">⬇️</button>
+  <button onclick="move('right')">➡️</button>
+</div>
+
+<script>
+const size = 4;
+const tileSize = 80;
+let tiles = [];
+const game = document.getElementById("game");
+
+function getColor(value) {
+  const colors = {
+    2:'#eee4da',4:'#ede0c8',8:'#f2b179',16:'#f59563',32:'#f67c5f',
+    64:'#f65e3b',128:'#edcf72',256:'#edcc61',512:'#edc850',1024:'#edc53f',
+    2048:'#edc22e'
+  };
+  return colors[value] || '#3c3a32';
+}
+
+function createTile(x,y,value){
+  const el = document.createElement("div");
+  el.className="tile";
+  el.textContent=value;
+  el.style.backgroundColor=getColor(value);
+  game.appendChild(el);
+  return {x,y,value,el,merged:false};
+}
+
+function setPosition(tile){
+  tile.el.style.transform = `translate(${tile.y*tileSize}px, ${tile.x*tileSize}px)`;
+  tile.el.style.backgroundColor = getColor(tile.value);
+  tile.el.textContent = tile.value;
+}
+
+function addRandomTile(){
+  let empty=[];
+  for(let x=0;x<size;x++){
+    for(let y=0;y<size;y++){
+      if(!tiles.find(t=>t.x===x && t.y===y)) empty.push({x,y});
+    }
+  }
+  if(!empty.length) return;
+  let pos = empty[Math.floor(Math.random()*empty.length)];
+  let tile = createTile(pos.x,pos.y,2);
+  tiles.push(tile);
+  setPosition(tile);
+}
+
+function init(){
+  tiles=[];
+  game.innerHTML="";
+  addRandomTile();
+  addRandomTile();
+}
+
+function move(direction){
+  tiles.forEach(t=>t.merged=false);
+
+  let order;
+  if(direction==='up') order=tiles.sort((a,b)=>a.x-b.x);
+  if(direction==='down') order=tiles.sort((a,b)=>b.x-a.x);
+  if(direction==='left') order=tiles.sort((a,b)=>a.y-b.y);
+  if(direction==='right') order=tiles.sort((a,b)=>b.y-a.y);
+
+  let moved=false;
+  let toRemove=[];
+
+  order.forEach(tile=>{
+    let {x,y,value}=tile;
+    let nx=x, ny=y;
+
+    while(true){
+      let tx=nx, ty=ny;
+      if(direction==='up') tx--;
+      if(direction==='down') tx++;
+      if(direction==='left') ty--;
+      if(direction==='right') ty++;
+
+      if(tx<0||ty<0||tx>=size||ty>=size) break;
+
+      let other = tiles.find(t=>t.x===tx && t.y===ty);
+
+      if(!other){
+        nx=tx; ny=ty;
+        moved=true;
+      }else if(other.value===tile.value && !other.merged && !tile.merged){
+        tile.value *=2;
+        tile.merged=true;
+        other.merged=true;
+        toRemove.push(other);
+        nx=tx; ny=ty;
+        moved=true;
+        break;
+      }else break;
+    }
+
+    tile.nextX=nx;
+    tile.nextY=ny;
+  });
+
+  if(!moved) return;
+
+  // Starte Animation
+  tiles.forEach(t=>{
+    t.x = t.nextX;
+    t.y = t.nextY;
+    setPosition(t);
+  });
+
+  // Nach Animation: entferne gemergte Tiles
+  setTimeout(()=>{
+    toRemove.forEach(t=>{
+      if(t.el.parentNode) t.el.parentNode.removeChild(t.el);
+    });
+    tiles = tiles.filter(t=>!toRemove.includes(t));
+    addRandomTile();
+  },210);
+}
+
+// Pfeiltasten
+document.addEventListener("keydown",e=>{
+  if(e.key==='ArrowUp') move('up');
+  if(e.key==='ArrowDown') move('down');
+  if(e.key==='ArrowLeft') move('left');
+  if(e.key==='ArrowRight') move('right');
+});
+
+init();
+</script>
+
+</body>
+</html>
