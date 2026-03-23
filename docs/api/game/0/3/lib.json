@@ -37,5 +37,13 @@
       ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]],
       ["official", ["#0f6cf1", "#a7c8ff", "#000000"]],
       ["mobile", ["#8e44f1", "#d9c7ff", "#000000"]]], 
-    "link": "https://aiincer.github.io/game/0/3/play?game=o06" }
+    "link": "https://aiincer.github.io/game/0/3/play?game=o06" },
+  "2048-air": { 
+    "bild": "https://aiincer.github.io/assets/png/game/0/3/2048air.png", 
+    "tag": [ 
+      ["advanced", ["#f1c40f", "#ffeaa7", "#000000"]],
+      ["official", ["#0f6cf1", "#a7c8ff", "#000000"]],
+      ["mobile", ["#8e44f1", "#d9c7ff", "#000000"]],
+      ["underground", ["#0f0f0f", "#d9c7ff", "#000000"]]], 
+    "link": "https://aiincer.github.io/game/0/3/play?game=ou1" }
 }
