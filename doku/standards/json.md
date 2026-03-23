@@ -1,5 +1,5 @@
 ```markdown
--<name> - <type>(:<more>) - <erklärung>
+-<name> - <type>(:<more>) - <zusätze><erklärung>
 ```
 - name:
   - der name des Elements in json
@@ -8,6 +8,8 @@
   - Datentypen: *1
 - more:
   - standart-wert
+- Zusätze:
+  - *2
 - erklärung:
   - wofür es ist
 
@@ -19,3 +21,7 @@
 - lst : list
 - jso : json
 - set : set
+
+*2
+- standartwert:
+  - (->^standartwert^)
