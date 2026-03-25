@@ -1,5 +1,5 @@
 ```markdown
--<name> - <type>:<more> - <zusätze><erklärung>
+-<name> - <type><more> - <zusätze><erklärung>
 ```
 - name:
   - der name des Elements in json
@@ -8,19 +8,24 @@
   - Datentypen: *1
 - more:
   - länge
+    - :^länge^
 - Zusätze:
   - *2
 - erklärung:
   - wofür es ist
 
 *1
-- str : string
-- int : int
-- flo : float / double
-- bol : boolean
-- lst : list
-- jso : json
-- set : set
+- standard:
+  - str : string
+  - int : int
+  - flo : float / double
+  - bol : boolean
+  - lst : list
+  - jso : json
+  - set : set
+- bonus:
+  - hex : hex-color
+  - rgb : rgb-color
 
 *2
 - standartwert:
@@ -29,3 +34,6 @@
 - variirende Länge:
   - bei more statt einer zahl >
   - (>^kurz^-^lang^)
+- bonus-datentyp:
+  - hinter dem datentyp +
+  - (+: ^bonus-datentyp(*1)^)
