@@ -26,6 +26,10 @@
 - bonus:
   - hex : hex-color
   - rgb : rgb-color
+  - url : website beginnend mit http/https
+  - urln : website beginnend mit http
+  - urls : website beginnend mit https
+  - url- : website ohne http/https
 
 *2
 - standartwert:
