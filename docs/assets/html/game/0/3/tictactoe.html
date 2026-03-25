@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Tic Tac Toe Neon Ultra</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #0f172a, #020617);
+    color: white;
+    text-align: center;
+}
+
+/* Titel */
+h1 {
+    margin-top: 20px;
+    font-size: 32px;
+    color: #22d3ee;
+    text-shadow: 0 0 25px #22d3ee;
+}
+
+/* Menü */
+.menu button {
+    margin: 10px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 15px #22d3ee;
+    transition: 0.3s;
+}
+
+.menu button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #22d3ee;
+}
+
+/* Score */
+.score {
+    margin-top: 15px;
+    font-size: 22px;
+}
+
+.xScore {
+    color: #ff3b5c;
+    text-shadow: 0 0 15px #ff3b5c;
+}
+
+.oScore {
+    color: #38bdf8;
+    text-shadow: 0 0 15px #38bdf8;
+}
+
+/* Status */
+.status {
+    margin-top: 10px;
+    font-size: 18px;
+    min-height: 25px;
+}
+
+/* Board */
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 110px);
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Zellen */
+.cell {
+    width: 110px;
+    height: 110px;
+    border-radius: 16px;
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(255,255,255,0.05);
+    box-shadow: inset 0 0 10px #22d3ee, 0 0 10px #22d3ee;
+    transition: 0.2s;
+}
+
+.cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px #22d3ee;
+}
+
+/* X & O */
+.x {
+    color: #ff3b5c;
+    text-shadow: 0 0 25px #ff3b5c;
+}
+
+.o {
+    color: #38bdf8;
+    text-shadow: 0 0 25px #38bdf8;
+}
+
+/* Gewinnfelder */
+.win {
+    animation: glowWin 1s infinite alternate;
+}
+
+@keyframes glowWin {
+    from { box-shadow: 0 0 10px #22d3ee; }
+    to { box-shadow: 0 0 40px #22d3ee; }
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>⚡ Tic Tac Toe Neon Ultra ⚡</h1>
+
+<div class="menu">
+    <button onclick="startGame('pvp')">👥 PvP</button>
+    <button onclick="startGame('bot')">🤖 Bot</button>
+</div>
+
+<div class="score">
+    <span class="xScore">❌ <span id="scoreX">0</span></span> |
+    <span class="oScore">⭕ <span id="scoreO">0</span></span>
+</div>
+
+<div class="status" id="status">Wähle einen Modus</div>
+
+<div class="board" id="board"></div>
+
+<script>
+let board, currentPlayer, mode;
+let scoreX = 0, scoreO = 0;
+let starter = "X";
+let gameOver = false;
+
+/* Start */
+function startGame(m) {
+    mode = m;
+    resetBoard();
+}
+
+/* Reset */
+function resetBoard() {
+    board = ["","","","","","","","",""];
+    gameOver = false;
+    currentPlayer = starter;
+    render();
+    updateStatus();
+
+    if (mode === "bot" && currentPlayer === "O") {
+        setTimeout(botMove, 500);
+    }
+}
+
+/* Render */
+function render(winCombo = []) {
+    const b = document.getElementById("board");
+    b.innerHTML = "";
+
+    board.forEach((cell, i) => {
+        let d = document.createElement("div");
+        d.className = "cell";
+
+        if (cell === "X") d.classList.add("x");
+        if (cell === "O") d.classList.add("o");
+
+        if (winCombo.includes(i)) d.classList.add("win");
+
+        d.innerText = cell;
+        d.onclick = () => move(i);
+        b.appendChild(d);
+    });
+}
+
+/* Move */
+function move(i) {
+    if (board[i] || gameOver) return;
+
+    board[i] = currentPlayer;
+
+    let winCombo = getWinner(board);
+
+    if (winCombo) {
+        gameOver = true;
+        render(winCombo);
+
+        if (currentPlayer === "X") scoreX++;
+        else scoreO++;
+
+        updateScore();
+
+        document.getElementById("status").innerHTML =
+            currentPlayer === "X"
+            ? "<span class='xScore'>❌ gewinnt!</span>"
+            : "<span class='oScore'>⭕ gewinnt!</span>";
+
+        starter = currentPlayer === "X" ? "O" : "X";
+
+        setTimeout(resetBoard, 1500);
+        return;
+    }
+
+    if (!board.includes("")) {
+        gameOver = true;
+        document.getElementById("status").innerText = "Unentschieden!";
+        setTimeout(resetBoard, 1500);
+        return;
+    }
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    render();
+    updateStatus();
+
+    if (mode === "bot" && currentPlayer === "O") {
+        setTimeout(botMove, 300);
+    }
+}
+
+/* Status */
+function updateStatus() {
+    document.getElementById("status").innerHTML =
+        currentPlayer === "X"
+        ? "<span class='xScore'>❌ ist dran</span>"
+        : "<span class='oScore'>⭕ ist dran</span>";
+}
+
+/* Gewinner */
+function getWinner(b) {
+    const w = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+    ];
+
+    for (let combo of w) {
+        if (b[combo[0]] &&
+            b[combo[0]] === b[combo[1]] &&
+            b[combo[1]] === b[combo[2]]) {
+            return combo;
+        }
+    }
+    return null;
+}
+
+/* BOT (unbesiegbar) */
+function botMove() {
+    let bestScore = -Infinity;
+    let moveIndex;
+
+    for (let i = 0; i < 9; i++) {
+        if (!board[i]) {
+            board[i] = "O";
+            let score = minimax(board, false);
+            board[i] = "";
+            if (score > bestScore) {
+                bestScore = score;
+                moveIndex = i;
+            }
+        }
+    }
+
+    move(moveIndex);
+}
+
+function minimax(b, isMax) {
+    let win = getWinner(b);
+    if (win) return isMax ? -1 : 1;
+    if (!b.includes("")) return 0;
+
+    if (isMax) {
+        let best = -Infinity;
+        for (let i = 0; i < 9; i++) {
+            if (!b[i]) {
+                b[i] = "O";
+                best = Math.max(best, minimax(b, false));
+                b[i] = "";
+            }
+        }
+        return best;
+    } else {
+        let best = Infinity;
+        for (let i = 0; i < 9; i++) {
+            if (!b[i]) {
+                b[i] = "X";
+                best = Math.min(best, minimax(b, true));
+                b[i] = "";
+            }
+        }
+        return best;
+    }
+}
+
+/* Score */
+function updateScore() {
+    document.getElementById("scoreX").innerText = scoreX;
+    document.getElementById("scoreO").innerText = scoreO;
+}
+
+/* Init */
+render();
+</script>
+
+</body>
+</html>
