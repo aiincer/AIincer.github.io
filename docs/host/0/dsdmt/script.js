@@ -28,7 +28,7 @@ async function loadLib() {
   };
   //URL-Parameter
   const params = new URLSearchParams(window.location.search);
-  const chatParam = params.get('Chat');
+  const chatParam = params.get('chat');
   const persParam = params.get('pers');
   //Chat in UR
   const initialChat = chatParam && lib.chats.includes(chatParam) ? chatParam : lib.chats[0];
