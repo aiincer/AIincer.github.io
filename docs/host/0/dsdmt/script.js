@@ -5,7 +5,6 @@ let currentUser = null;
 async function loadLib() {
   const res = await fetch('/src/db/lib.json');
   lib = await res.json();
-
   const chatSelect = document.getElementById('chatSelect');
   lib.chats.forEach(chat => {
     const opt = document.createElement('option');
@@ -13,9 +12,7 @@ async function loadLib() {
     opt.textContent = chat;
     chatSelect.appendChild(opt);
   });
-
   chatSelect.onchange = () => loadChat(chatSelect.value);
-
   loadUsers();
 }
 
@@ -27,7 +24,6 @@ function loadUsers() {
     opt.textContent = p[0];
     userSelect.appendChild(opt);
   });
-
   userSelect.onchange = () => {
     currentUser = userSelect.value;
     renderMessages();
@@ -48,28 +44,21 @@ function getProfile(name) {
 function renderMessages() {
   const container = document.getElementById('messages');
   container.innerHTML = '';
-
   if (!currentChat) return;
-
   currentChat.messages.forEach(msg => {
     const div = document.createElement('div');
     div.classList.add('msg');
-
     if (msg.from === currentUser) {
       div.classList.add('self');
     } else {
       div.classList.add('left');
     }
-
     const img = document.createElement('img');
     img.src = getProfile(msg.from);
-
     const text = document.createElement('div');
     text.innerHTML = `<b>${msg.from}</b><br>${msg.text}<br><small>${msg.time}</small>`;
-
     div.appendChild(img);
     div.appendChild(text);
-
     container.appendChild(div);
   });
 }
