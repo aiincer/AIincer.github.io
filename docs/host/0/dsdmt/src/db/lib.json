@@ -4,7 +4,7 @@
     "beispiel"
   ],
   "personen": [
-    ["", "/src/img/weiss.png"],
+    ["", "./src/img/weiss.png"],
     ["Anna-Lena", "https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-anna-lena.png"],
     ["Anthony",   "https://www.carlsen.de/sites/default/files/styles/s_390_auto/public/2020-10/OD_9783551652461_SDMT-Tagebuch_Inh_A01_143_06_preview.png"],
     ["Benni",     "https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-benni.png"],
@@ -23,7 +23,7 @@
     ["Max",       "https://www.carlsen.de/sites/default/files/styles/s_390_auto/public/2020-10/OD_9783551652461_SDMT-Tagebuch_Inh_A01_143_10_preview%20%281%29.png"],
     ["Ronja",     "https://www.carlsen.de/sites/default/files/styles/s_390_auto/public/2020-10/OD_9783551652461_SDMT-Tagebuch_Inh_A01_142_01_preview_maxWidth_1024_maxHeight_1024_ppi_300.png"],
     ["Schoki",    "https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-schoki.png"],
-    ["Sibel",     "/src/img/na.png"],
+    ["Sibel",     "./src/img/na.png"],
     ["Silas",     "https://www.carlsen.de/sites/default/files/styles/s_390_auto/public/2020-10/OD_9783551652461_SDMT-Tagebuch_Inh_A01_143_03_preview_maxWidth_1024_maxHeight_1024_ppi_300.png"],
     ["Yannik",    "https://www.carlsen.de/sites/default/files/styles/s_390_auto/public/2020-10/OD_9783551652461_SDMT-Tagebuch_Inh_A01_142_10_preview_maxWidth_1024_maxHeight_1024_ppi_300.png"],
     ["Zack",      "https://www.carlsen.de/sites/default/files/styles/s_390_auto/public/2020-10/OD_9783551652461_SDMT-Tagebuch_Inh_A01_143_11_preview%20%281%29.png"]
