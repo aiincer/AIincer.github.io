@@ -1,5 +1,6 @@
 {
   "messages": [
+    {"time": "",     "from": "", "text": "Eine Beispielkonversation, die genutzt wird um den Aufbau eines Chat-RPG zu erklären."},
     {"time": "5:00", "from": "Max", "text": "Guten Morgen!"},
     {"time": "6:00", "from": "Ida", "text": "Warum bist du schon um 5 Uhr wach?"},
     {"time": "6:01", "from": "Max", "text": "Lernen."},
