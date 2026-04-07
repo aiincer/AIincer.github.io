@@ -5,6 +5,7 @@ let currentUser = null;
 async function loadLib() {
   const res = await fetch('./src/db/lib.json');
   lib = await res.json();
+
   const chatSelect = document.getElementById('chatSelect');
   lib.chats.forEach(chat => {
     const opt = document.createElement('option');
@@ -13,10 +14,7 @@ async function loadLib() {
     chatSelect.appendChild(opt);
   });
   chatSelect.onchange = () => loadChat(chatSelect.value);
-  loadUsers();
-}
 
-function loadUsers() {
   const userSelect = document.getElementById('userSelect');
   lib.personen.forEach(p => {
     const opt = document.createElement('option');
@@ -28,6 +26,20 @@ function loadUsers() {
     currentUser = userSelect.value;
     renderMessages();
   };
+  //URL-Parameter
+  const params = new URLSearchParams(window.location.search);
+  const chatParam = params.get('Chat');
+  const persParam = params.get('pers');
+  //Chat in UR
+  const initialChat = chatParam && lib.chats.includes(chatParam) ? chatParam : lib.chats[0];
+  chatSelect.value = initialChat;
+  await loadChat(initialChat);
+  //Person in URL 
+  const initialUser = persParam && lib.personen.some(p => p[0] === persParam) ? persParam : lib.personen[0][0];
+  userSelect.value = initialUser;
+  currentUser = initialUser;
+
+  renderMessages();
 }
 
 async function loadChat(chatName) {
