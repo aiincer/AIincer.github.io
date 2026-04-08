@@ -1,7 +1,8 @@
 {
   "chats": [
     "",
-    "beispiel"
+    "beispiel",
+    "Chat-RPG1"
   ],
   "personen": [
     ["", "./src/img/weiss.png"],
