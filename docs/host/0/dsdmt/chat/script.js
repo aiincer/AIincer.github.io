@@ -3,7 +3,7 @@ let currentChat = null;
 let currentUser = null;
 
 async function loadLib() {
-  const res = await fetch('./src/db/lib.json');
+  const res = await fetch('../src/db/lib.json');
   lib = await res.json();
 
   const chatSelect = document.getElementById('chatSelect');
@@ -43,7 +43,7 @@ async function loadLib() {
 }
 
 async function loadChat(chatName) {
-  const res = await fetch(`./src/db/${chatName}.json`);
+  const res = await fetch(`../src/db/${chatName}.json`);
   currentChat = await res.json();
   renderMessages();
 }
