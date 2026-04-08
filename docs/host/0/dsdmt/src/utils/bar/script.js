@@ -1,6 +1,6 @@
 const inhalte = [
-  ["up", "up.html"],
-  ["down", "down.html"]
+  ["up",   "https://aiincer.github.io/host/0/dsdmt/src/utils/bar/up.html"],
+  ["down", "https://aiincer.github.io/host/0/dsdmt/src/utils/bar/down.html"]
 ];
 inhalte.forEach(([id, datei]) => {
   const element = document.getElementById(id);
