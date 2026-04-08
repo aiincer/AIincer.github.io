@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIincer</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+body { background: linear-gradient(135deg, #0f0f1b, #1a1a2e); color:white; display:flex; justify-content:center; align-items:flex-start; padding:50px; }
+.container { width:95%; max-width:800px; padding:40px; background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); border-radius:20px; box-shadow:0 0 40px rgba(0,255,255,0.2); }
+header { text-align:center; margin-bottom:30px; }
+header h1 { font-size:2.5rem; background: linear-gradient(90deg, #00f5ff, #ff00c8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+input[type="text"], select, input[type="range"] { width:100%; margin:8px 0 20px 0; padding:10px; border-radius:10px; border:none; background: rgba(255,255,255,0.1); color:white; }
+label { display:block; margin-top:10px; font-size:0.9rem; }
+.preview-container { margin-top:20px; text-align:center; }
+.preview { max-width:100%; border-radius:0; }
+.code-container { margin-top:20px; background: rgba(255,255,255,0.08); padding:20px; border-radius:15px; overflow-x:auto; font-family:monospace; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>Bild-Editor</h1>
+</header>
+
+<label>Bild-URL eingeben:</label>
+<input type="text" id="imgURL" placeholder="https://example.com/bild.jpg">
+
+<label>Form auswählen:</label>
+<select id="shape">
+  <option value="square">Quadrat</option>
+  <option value="circle">Kreis</option>
+  <option value="rounded">Abgerundete Ecken</option>
+</select>
+
+<label id="radiusLabel" style="display:none;">Ecken-Radius:</label>
+<input type="range" id="radius" min="0" max="100" value="20" style="display:none;">
+
+<label>Zuschneiden (oben):</label>
+<input type="range" id="cropTop" min="0" max="100" value="0">
+<label>Zuschneiden (unten):</label>
+<input type="range" id="cropBottom" min="0" max="100" value="0">
+<label>Zuschneiden (links):</label>
+<input type="range" id="cropLeft" min="0" max="100" value="0">
+<label>Zuschneiden (rechts):</label>
+<input type="range" id="cropRight" min="0" max="100" value="0">
+
+<div class="preview-container">
+  <img id="preview" class="preview" src="" alt="Vorschau">
+</div>
+
+<div class="code-container">
+  <code id="htmlCode"></code>
+</div>
+
+<script>
+const imgURL = document.getElementById('imgURL');
+const shape = document.getElementById('shape');
+const radius = document.getElementById('radius');
+const radiusLabel = document.getElementById('radiusLabel');
+const preview = document.getElementById('preview');
+const htmlCode = document.getElementById('htmlCode');
+
+const cropTop = document.getElementById('cropTop');
+const cropBottom = document.getElementById('cropBottom');
+const cropLeft = document.getElementById('cropLeft');
+const cropRight = document.getElementById('cropRight');
+
+function updatePreview() {
+  let borderRadius = '0';
+  if(shape.value === 'circle') borderRadius = '50%';
+  else if(shape.value === 'rounded') borderRadius = radius.value + 'px';
+
+  const ct = cropTop.value+'%';
+  const cb = cropBottom.value+'%';
+  const cl = cropLeft.value+'%';
+  const cr = cropRight.value+'%';
+
+  preview.style.borderRadius = borderRadius;
+  preview.style.objectFit = 'cover';
+  preview.style.objectPosition = `${cl} ${ct}`;
+  preview.style.width = `calc(100% - ${parseInt(cl)+parseInt(cr)}%)`;
+  preview.style.height = `calc(auto - ${parseInt(ct)+parseInt(cb)}%)`;
+
+  let styleCode = `style="border-radius:${borderRadius}; object-fit:cover; width:100%; height:auto;"`;
+  htmlCode.textContent = `<img src="${preview.src}" ${styleCode}>`;
+}
+
+imgURL.addEventListener('input', () => {
+  preview.src = imgURL.value;
+  updatePreview();
+});
+
+shape.addEventListener('change', () => {
+  radius.style.display = shape.value === 'rounded' ? 'block' : 'none';
+  radiusLabel.style.display = shape.value === 'rounded' ? 'block' : 'none';
+  updatePreview();
+});
+
+radius.addEventListener('input', updatePreview);
+cropTop.addEventListener('input', updatePreview);
+cropBottom.addEventListener('input', updatePreview);
+cropLeft.addEventListener('input', updatePreview);
+cropRight.addEventListener('input', updatePreview);
+</script>
+</body>
+</html>
