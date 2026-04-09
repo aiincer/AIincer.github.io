@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSDMT</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#111;
+    overflow-x:hidden;
+}
+
+#up{
+    height:70px;
+    background:black;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+}
+
+#main{
+    position:relative;
+    height:calc(100vh - 70px);
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+}
+
+h1{
+    position:relative;
+    z-index:10;
+    color:white;
+    font-size:55px;
+    text-shadow:0 0 20px cyan;
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background-size:cover;
+    background-position:center;
+    animation:fall linear forwards;
+    z-index:1;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-150px);
+    }
+    to{
+        transform:translateY(120vh);
+    }
+}
+
+#down{
+    height:300px;
+    background:black;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:30px;
+}
+</style>
+</head>
+<body>
+<div id="up"></div>
+
+<div id="main">
+    <h1>Schule der magischen Tiere Community</h1>
+</div>
+
+<div id="down"></div>
+<script>
+const daten = [
+"https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-anna-lena.png",
+"https://www.carlsen.de/sites/default/files/styles/s_390_auto/public/2020-10/OD_9783551652461_SDMT-Tagebuch_Inh_A01_143_06_preview.png",
+"https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-benni.png",
+"https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-eddie.png",
+"https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-ida.png",
+"https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-jo.png",
+"https://www.carlsen.de/sites/default/files/styles/s_330_auto/public/2025-08/die-schule-der-magischen-tiere-portrait-schoki.png"
+];
+const main = document.getElementById("main");
+function spawnCircle(){
+    let circle=document.createElement("div");
+    circle.classList.add("circle");
+    let size=Math.random()*80+60;
+    circle.style.width=size+"px";
+    circle.style.height=size+"px";
+    circle.style.left=Math.random()*100+"%";
+    circle.style.animationDuration=(Math.random()*4+6)+"s";
+    circle.style.backgroundImage=
+    `url(${daten[Math.floor(Math.random()*daten.length)]})`;
+    main.appendChild(circle);
+    setTimeout(()=>{
+        circle.remove();
+    },10000);
+}
+setInterval(()=>{
+    spawnCircle();
+},500);
+</script>
+</body>
+</html>
