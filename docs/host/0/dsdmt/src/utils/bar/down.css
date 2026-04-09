@@ -1,0 +1,43 @@
+#down {
+  width: 100%;
+  background: #f0f0f0;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  border-top: 1px solid #ccc;
+}
+
+#down a {
+  color: #777;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+#down a:hover {
+  color: #555;
+}
+
+#down-left {
+  display: flex;
+  align-items: center;
+}
+
+#down-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#down-right img {
+  height: 32px;
+  width: 32px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+}
+
+#down-right img:hover {
+  opacity: 1;
+}
