@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seite mit Bars</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    #up {
+      height: 60px;
+      background-color: #333;
+    }
+    #content {
+      flex: 1;
+      padding: 20px;
+    }
+    #down {
+      height: 60px;
+      background-color: #333;
+    }
+    p {
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="up"></div>
+
+  <div id="content">
+    <p>Das ist der erste Absatz mit Beispieltext.</p>
+    <p>Das ist der zweite Absatz mit etwas mehr Inhalt.</p>
+    <p>Hier ist der dritte Absatz, um die Seite zu füllen.</p>
+    <p>Und hier kommt noch ein vierter Absatz als Beispiel.</p>
+  </div>
+
+  <div id="down"></div>
+</body>
+</html>
