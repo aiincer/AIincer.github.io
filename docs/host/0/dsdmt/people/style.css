@@ -35,8 +35,8 @@ select:hover{
 #main{
     min-height:calc(100vh - 80px);
     display:flex;
-    justify-content:top;
-    align-items:top;
+    justify-content:flex-start;
+    align-items:flex-start;
     background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
     padding:30px;
 }
