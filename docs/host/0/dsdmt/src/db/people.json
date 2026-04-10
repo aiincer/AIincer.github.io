@@ -12,16 +12,15 @@
             }
         ]
     },
-
-    "anna": {
-        "name": "Anna Müller",
-        "img": "https://i.pravatar.cc/300?img=5",
+    "noname": {
+        "name": "NoName",
+        "img": "../src/img/progile/noname.png",
         "socials": [
             {
-                "img": "https://cdn-icons-png.flaticon.com/512/174/174876.png",
-                "social": "YT",
-                "name": "AnnaTube",
-                "link": "https://youtube.com"
+                "img": "../src/img/icons/discord.png",
+                "social": "Discord",
+                "name": "noname04303_51002",
+                "link": "../discord"
             }
         ]
     }
