@@ -35,7 +35,7 @@ select:hover{
 #main{
     min-height:calc(100vh - 80px);
     display:flex;
-    justify-content:flex-start;
+    justify-content:center;
     align-items:flex-start;
     background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
     padding:30px;
@@ -50,6 +50,7 @@ select:hover{
     box-shadow:0 0 30px rgba(0,255,255,.4);
     animation:fadeIn .5s ease;
     text-align:center;
+    margin-top:20px;
 }
 
 .card img.mainimg{
@@ -73,7 +74,6 @@ select:hover{
     margin-bottom:20px;
 }
 
-/* SOCIALS */
 .social{
     display:flex;
     align-items:center;
