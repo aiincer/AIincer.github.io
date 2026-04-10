@@ -5,7 +5,7 @@
         "dsc": "Roleplayer",
         "socials": [
             {
-                "img": "../src/img/logo/discord.png",
+                "img": "../src/img/logos/discord.png",
                 "social": "Discord",
                 "name": "margery_ashleigh",
                 "link": "../discord"
