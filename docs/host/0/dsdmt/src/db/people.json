@@ -1,20 +1,14 @@
 {
-    "max": {
-        "name": "Max Mustermann",
-        "img": "https://i.pravatar.cc/300?img=1",
-        "dsc": "Ein cooler Entwickler und Designer.",
+    "margery": {
+        "name": "Margery",
+        "img": "../src/img/profile/margery.png",
+        "dsc": "Roleplayer",
         "socials": [
             {
-                "img": "https://cdn-icons-png.flaticon.com/512/174/174857.png",
-                "social": "IG",
-                "name": "max_dev",
-                "link": "https://instagram.com"
-            },
-            {
-                "img": "https://cdn-icons-png.flaticon.com/512/733/733553.png",
-                "social": "GH",
-                "name": "MaxGithub",
-                "link": "https://github.com"
+                "img": "../src/img/logo/discord.png",
+                "social": "Discord",
+                "name": "margery_ashleigh",
+                "link": "../discord"
             }
         ]
     },
