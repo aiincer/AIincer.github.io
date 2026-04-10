@@ -6,7 +6,7 @@ body{
     overflow-x:hidden;
 }
 
-#head{
+#up{
     height:80px;
     background:black;
     display:flex;
