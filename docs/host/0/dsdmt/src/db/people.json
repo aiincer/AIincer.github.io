@@ -17,19 +17,19 @@
         "img": "../src/img/progile/noname.png",
         "socials": [
             {
-                "img": "../src/img/icons/discord.png",
+                "img": "../src/img/logos/discord.png",
                 "social": "Discord",
                 "name": "noname04303_51002",
                 "link": "../discord"
             },
             {
-                "img": "../src/img/icons/fandom.png",
+                "img": "../src/img/logos/fandom.png",
                 "social": "Fandom",
                 "name": "kabelaut_nachdruck",
                 "link": "https://dsdmt.fandom.com/de"
             },
             {
-                "img": "../src/img/icons/github.png",
+                "img": "../src/img/logos/github.png",
                 "social": "GitHub",
                 "name": "no-name-coding",
                 "link": "https://github.com/no-name-coding"
