@@ -14,7 +14,7 @@
     },
     "noname": {
         "name": "NoName",
-        "img": "../src/img/progile/noname.png",
+        "img": "../src/img/profile/noname.png",
         "socials": [
             {
                 "img": "../src/img/logos/discord.png",
