@@ -36,5 +36,24 @@
                 "link": "https://github.com/no-name-coding"
             }
         ]
+    },
+    "easystar": {
+        "name": "Easy Star",
+        "img": "../src/img/profile/easystar.png",
+        "dsc": "Roleplayer, Editor",
+        "socials": [
+            {
+                "img": "../src/img/logos/discord.png",
+                "social": "Discord",
+                "name": "easystar0548",
+                "link": "../discord"
+            },
+            {
+                "img": "../src/img/logos/fandom.png",
+                "social": "Fandom",
+                "name": "Hedera Teds",
+                "link": "https://dsdmt.fandom.com/de/wiki/Benutzer:Hedera%20Teds?useskin=fandomdesktop"
+            }
+        ]
     }
 }
