@@ -55,5 +55,24 @@
                 "link": "https://dsdmt.fandom.com/de/wiki/Benutzer:Hedera_Teds?useskin=fandomdesktop"
             }
         ]
+    },
+    "emi": {
+        "name": "emi",
+        "img": "../src/img/profile/emi.png",
+        "dsc": "Roleplayer, Editor",
+        "socials": [
+            {
+                "img": "../src/img/logos/discord.png",
+                "social": "Discord",
+                "name": "kyschweitzertoothbrush",
+                "link": "../discord"
+            },
+            {
+                "img": "../src/img/logos/fandom.png",
+                "social": "Fandom",
+                "name": "Akitaandkataruarecoolnames",
+                "link": "https://dsdmt.fandom.com/de/wiki/Benutzer:Akitaandkataruarecoolnames?useskin=fandomdesktop"
+            }
+        ]
     }
 }
