@@ -74,5 +74,24 @@
                 "link": "https://dsdmt.fandom.com/de/wiki/Benutzer:Akitaandkataruarecoolnames?useskin=fandomdesktop"
             }
         ]
+    },
+    "liliane": {
+        "name": "Liliane",
+        "img": "../src/img/profile/emi.png",
+        "dsc": "Editor",
+        "socials": [
+            {
+                "img": "../src/img/logos/discord.png",
+                "social": "Discord",
+                "name": "naturewhisper",
+                "link": "../discord"
+            },
+            {
+                "img": "../src/img/logos/fandom.png",
+                "social": "Fandom",
+                "name": "Naturewhisper",
+                "link": "https://dsdmt.fandom.com/de/wiki/Benutzer:Naturewhisper?useskin=fandomdesktop"
+            }
+        ]
     }
 }
