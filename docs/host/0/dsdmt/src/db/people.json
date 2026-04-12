@@ -15,6 +15,7 @@
     "noname": {
         "name": "NoName",
         "img": "../src/img/profile/noname.png",
+        "dsc": "Roleplayer, Editor, Developper",
         "socials": [
             {
                 "img": "../src/img/logos/discord.png",
