@@ -1,17 +1,17 @@
 # Chat
 ## übersicht
-- /chat/lib.json
+- ```/chat/lib.json```
 ```
 todo
 ```
 ## ein Chat
-- /chat/<id>.json
+- ```/chat/<id>.json```
 ```
 todo
 ```
 
 # 1000-Ways
-- /1000-ways.json
+- ```/1000-ways.json```
 ```
 - <id>      - jso - die ID des Abschnittes
   - "txt"   - txt - der Text des Abschnittes
@@ -24,7 +24,7 @@ todo
 ```
 
 # Personen
-- /people.json
+- ```/people.json```
 ```
 todo
 ```
