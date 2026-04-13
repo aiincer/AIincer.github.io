@@ -1,0 +1,120 @@
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#070710;
+    color:white;
+    overflow-y:auto;
+    overflow-x:hidden;
+    min-height:100vh;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:
+        radial-gradient(circle at 20% 20%, #7c4dff55, transparent 35%),
+        radial-gradient(circle at 80% 30%, #00e5ff55, transparent 40%),
+        radial-gradient(circle at 40% 80%, #ff00ff33, transparent 45%);
+    animation: moveBg 12s infinite alternate ease-in-out;
+    z-index:-2;
+    filter: blur(50px);
+}
+
+@keyframes moveBg{
+    0%{transform: translate(0,0) scale(1);}
+    100%{transform: translate(5%, -5%) scale(1.1);}
+}
+
+#up{
+    height:70px;
+    background:rgba(0,0,0,0.75);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:24px;
+    position:sticky;
+    top:0;
+    backdrop-filter: blur(10px);
+}
+
+#main{
+    min-height:calc(100vh - 70px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+}
+
+#container{
+    width:90%;
+    max-width:700px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+#textBox{
+    padding:30px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    text-align:center;
+}
+
+#text{
+    font-size:28px;
+    line-height:1.5;
+}
+
+#questionBox{
+    padding:20px;
+    border-radius:20px;
+    background:rgba(0,0,0,0.4);
+    border:1px solid rgba(0,255,255,0.15);
+    backdrop-filter: blur(15px);
+    text-align:center;
+}
+
+#question{
+    font-size:18px;
+    margin-bottom:12px;
+    color:#d0d0d0;
+}
+
+#choices{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+#choices button{
+    padding:14px 18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+    color:white;
+    background:linear-gradient(135deg,#00e5ff,#7c4dff);
+    transition:0.2s;
+}
+
+#choices button:hover{
+    transform:scale(1.05);
+}
+
+#down{
+    min-height:200px;
+    margin-top:80px;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,0.9));
+    color:#aaa;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:16px;
+    padding:40px 20px;
+}
