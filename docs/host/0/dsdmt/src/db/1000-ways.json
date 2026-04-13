@@ -1,0 +1,45 @@
+[
+  {
+    "id": "start",
+    "txt": "Du stehst vor der Schule der magischen Tiere.",
+    "question": "Was willst du tun?",
+    "ans": [
+      ["Reingehen", "klasse"],
+      ["Auf den Hof gehen", "hof"]
+    ]
+  },
+  {
+    "id": "klasse",
+    "txt": "Das Klassenzimmer wirkt heute irgendwie anders...",
+    "question": "Wie reagierst du?",
+    "ans": [
+      ["Mit Ida sprechen", "ida"],
+      ["Zurückgehen", "start"]
+    ]
+  },
+  {
+    "id": "hof",
+    "txt": "Auf dem Schulhof spürst du eine magische Präsenz...",
+    "question": "Was jetzt?",
+    "ans": [
+      ["Nachsehen", "laufen"],
+      ["Zurück", "start"]
+    ]
+  },
+  {
+    "id": "ida",
+    "txt": "Ida erzählt dir ein Geheimnis über ein magisches Tier...",
+    "question": "Weiter?",
+    "ans": [
+      ["Zurück", "klasse"]
+    ]
+  },
+  {
+    "id": "laufen",
+    "txt": "Ein Schatten mit leuchtenden Augen verschwindet zwischen den Bäumen...",
+    "question": "Was nun?",
+    "ans": [
+      ["Zurück", "hof"]
+    ]
+  }
+]
