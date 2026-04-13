@@ -1,7 +1,7 @@
 [
   {
     "id": "start",
-    "txt": "Du stehst auf de Shulhof der Wintersteinschuöe um etwas auf dem Flomarkt zu kaufen.",
+    "txt": "Du stehst auf de Schulhof der Wintersteinschule um etwas auf dem Flomarkt zu kaufen.",
     "question": "Was kaufst du?",
     "ans": [
       ["Holz", "1"],
@@ -21,7 +21,7 @@
     "question": "Ende 1 :)"
   } , {
     "id": "2",
-    "txt": "Du hast Holz gekauft und beginnst es zu Trinken, aber dann kommt Ida vorbei.",
+    "txt": "Du hast ein Getränk gekauft und beginnst es zu Trinken, aber dann kommt Ida vorbei.",
     "question": "Redest du mit ihr?",
     "ans": [
       ["Ja", "21"],
