@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Looksmaxxing Test</title>
+<style>
+  body {
+    font-family: Arial;
+    text-align: center;
+    background: #111;
+    color: white;
+  }
+  .question {
+    margin: 20px;
+  }
+  button {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h1>LOOKSMAXXING-TEST</h1>
+<p>Bist du ein echter Mogger???</p>
+
+<div class="question">
+  <p>Wie ist dein Canthal Tilt?</p>
+  <button onclick="setAnswer('ct','positiv')">Positiv</button>
+  <button onclick="setAnswer('ct','neutral')">Neutral</button>
+  <button onclick="setAnswer('ct','negativ')">Negativ</button>
+</div>
+
+<div class="question">
+  <p>Hast du eine gute Jawline?</p>
+  <button onclick="setAnswer('jl','ja')">Ja</button>
+  <button onclick="setAnswer('jl','nein')">Nein</button>
+</div>
+
+<div class="question">
+  <p>Hast du sichtbare Augenbrauen?</p>
+  <button onclick="setAnswer('ab','ja')">Ja</button>
+  <button onclick="setAnswer('ab','nein')">Nein</button>
+</div>
+
+<div class="question">
+  <p>Hast du eine Nase?</p>
+  <button onclick="setAnswer('nase','ja')">Ja</button>
+  <button onclick="setAnswer('nase','nein')">Nein</button>
+</div>
+
+<div class="question">
+  <p>Hast du eine Glatze?</p>
+  <button onclick="setAnswer('haare','ja')">Ja</button>
+  <button onclick="setAnswer('haare','nein')">Nein</button>
+</div>
+
+<div class="question">
+  <p>Wie viele Stunden schaust du Clav am Tag?</p>
+  <input type="number" id="clav" value="0">
+</div>
+
+<br>
+<button onclick="calculate()">Ergebnis berechnen</button>
+
+<h2 id="result"></h2>
+
+<p style="margin-top:50px;">c aiincer, translated by no-name-coding</p>
+
+<script>
+let answers = {};
+
+function setAnswer(key, value) {
+  answers[key] = value;
+}
+
+function calculate() {
+  let score = 5;
+  let clav = parseFloat(document.getElementById("clav").value) || 0;
+
+  if (answers.ct === "positiv") score += 2;
+  if (answers.ct === "neutral") score += 1;
+
+  if (answers.jl === "ja") score += 2;
+  else score -= 1;
+
+  if (answers.ab === "ja") score += 1;
+
+  if (answers.nase === "nein") score -= 2;
+
+  if (answers.haare === "ja") score -= 2;
+
+  if (clav < 1) score -= 1;
+  else if (clav >= 5) score += 2;
+
+  let result = "";
+
+  if (score <= 3) result = "Du bist Subhuman!";
+  else if (score === 4) result = "Du bist Sub 5!";
+  else if (score === 5) result = "Du bist Low Tier Normie!";
+  else if (score === 6) result = "Du bist Mid Tier Normie!";
+  else if (score === 7) result = "Du bist High Tier Normie!";
+  else if (score === 8) result = "Du bist Chad-Lite!";
+  else if (score === 9) result = "Du bist Chad!";
+  else result = "Du bist True Adam!";
+
+  document.getElementById("result").innerText = result;
+}
+</script>
+
+</body>
+</html>
