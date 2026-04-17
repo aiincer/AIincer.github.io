@@ -10,14 +10,25 @@
     background: #111;
     color: white;
   }
+
   .question {
     margin: 20px;
   }
+
   button {
     margin: 5px;
     padding: 10px 20px;
     cursor: pointer;
+    border: none;
+    background: #333;
+    color: white;
   }
+
+  /* Farben */
+  .green { background-color: green !important; }
+  .yellow { background-color: goldenrod !important; }
+  .red { background-color: red !important; }
+
 </style>
 </head>
 <body>
@@ -27,33 +38,33 @@
 
 <div class="question">
   <p>Wie ist dein Canthal Tilt?</p>
-  <button onclick="setAnswer('ct','positiv')">Positiv</button>
-  <button onclick="setAnswer('ct','neutral')">Neutral</button>
-  <button onclick="setAnswer('ct','negativ')">Negativ</button>
+  <button onclick="setAnswer(this,'ct','positiv','green')">Positiv</button>
+  <button onclick="setAnswer(this,'ct','neutral','yellow')">Neutral</button>
+  <button onclick="setAnswer(this,'ct','negativ','red')">Negativ</button>
 </div>
 
 <div class="question">
   <p>Hast du eine gute Jawline?</p>
-  <button onclick="setAnswer('jl','ja')">Ja</button>
-  <button onclick="setAnswer('jl','nein')">Nein</button>
+  <button onclick="setAnswer(this,'jl','ja','green')">Ja</button>
+  <button onclick="setAnswer(this,'jl','nein','red')">Nein</button>
 </div>
 
 <div class="question">
   <p>Hast du sichtbare Augenbrauen?</p>
-  <button onclick="setAnswer('ab','ja')">Ja</button>
-  <button onclick="setAnswer('ab','nein')">Nein</button>
+  <button onclick="setAnswer(this,'ab','ja','green')">Ja</button>
+  <button onclick="setAnswer(this,'ab','nein','red')">Nein</button>
 </div>
 
 <div class="question">
   <p>Hast du eine Nase?</p>
-  <button onclick="setAnswer('nase','ja')">Ja</button>
-  <button onclick="setAnswer('nase','nein')">Nein</button>
+  <button onclick="setAnswer(this,'nase','ja','green')">Ja</button>
+  <button onclick="setAnswer(this,'nase','nein','red')">Nein</button>
 </div>
 
 <div class="question">
   <p>Hast du eine Glatze?</p>
-  <button onclick="setAnswer('haare','ja')">Ja</button>
-  <button onclick="setAnswer('haare','nein')">Nein</button>
+  <button onclick="setAnswer(this,'haare','ja','red')">Ja</button>
+  <button onclick="setAnswer(this,'haare','nein','green')">Nein</button>
 </div>
 
 <div class="question">
@@ -71,8 +82,17 @@
 <script>
 let answers = {};
 
-function setAnswer(key, value) {
+function setAnswer(button, key, value, colorClass) {
   answers[key] = value;
+
+  // Alle Buttons der Frage zurücksetzen
+  let buttons = button.parentElement.querySelectorAll("button");
+  buttons.forEach(btn => {
+    btn.classList.remove("green", "yellow", "red");
+  });
+
+  // Aktiven Button färben
+  button.classList.add(colorClass);
 }
 
 function calculate() {
