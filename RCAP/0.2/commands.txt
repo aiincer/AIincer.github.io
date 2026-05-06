@@ -1,1 +1,2 @@
-
+--lokal
+  --connections add <name> <ip>
